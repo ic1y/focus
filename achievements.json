@@ -1,0 +1,70 @@
+{
+	"achievements" : [
+		{
+			"name": "Capybara",
+			"description": "You are focused like capybara. Capybara applauds you.",
+			"imgSrc": "capy.jpg",
+			"req": "5"
+		},
+		{
+			"name": "Milly",
+			"description": "Bleh! Too focused! Don't you have any time fo Milly?",
+			"imgSrc": "milly.jpg",
+			"req": "10"
+		},
+		{
+			"name": "Doge",
+			"description": "Wow! Such focus! Much zen! So proud. Much wow!",
+			"imgSrc": "doge.jpg",
+			"req": "25"
+		},
+		{
+			"name": "Floppa",
+			"description": "Zdravstvuy, tovarisch! Big focus energy. Keep going!",
+			"imgSrc": "floppa.jpg",
+			"req": "60"
+		},
+		{
+			"name": "Unico",
+			"description": "Omedetou! Nyan, this deserves a celebration!",
+			"imgSrc": "unico.jpg",
+			"req": "180"
+		},
+		{
+			"name": "Gusic",
+			"description": "Hmm...hmm...I smell someone silly!",
+			"imgSrc": "gusic.jpg",
+			"req": "360"
+		},
+		{
+			"name": "Pop cat",
+			"description": "Pop pop pop pop pop! Keep popping!",
+			"imgSrc": "popcat.jpg",
+			"req": "720"
+		},
+		{
+			"name": "Maxwell",
+			"description": "Beep boop. The focusmaxxing never stops!",
+			"imgSrc": "maxwell.jpg",
+			"req": "1440"
+		},
+		{
+			"name": "Luna",
+			"description": "Crunch crunch! Take a break, let's eat raw uranium together!",
+			"imgSrc": "luna.jpg",
+			"req": "2880"
+		},
+		{
+			"name": "Nyan Cat",
+			"description": "Nyan nyan nyan nyan nyan nyan nyan nyan nyan nyan",
+			"imgSrc": "nyan.png",
+			"req": "6000"
+		},
+		{
+			"name": "Borger",
+			"description": "You've worked immensely hard. Here, have a cheeseburger!",
+			"imgSrc": "cheeseborger.jpg",
+			"req": "12000"
+		}
+	]
+}

@@ -1,0 +1,22 @@
+<h1>Welcome back, {{username}}</h1>
+<span id="time">&nbsp;</span>
+<button id="start">Start a focus</button>
+<button id="end">End the focus</button>
+
+<h2>Achievements:</h2>
+<div id="acvm">
+	{{{getAchievements focusData}}}
+</div>
+{{#if focusData}}
+<h2>Total focus time: {{getTotalTime focusData}}</h2>
+<ul>
+	{{#each focusData}}
+			<li>
+				{{showTime this}}					
+			</li>
+	{{/each}}
+</ul>
+{{/if}}
+<a href="/log-out">Log out</a>
+<button id="delete">Delete account</button>
+<script src="/static/app.js"></script>
