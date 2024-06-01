@@ -23,6 +23,9 @@ const formatTime = (milliseconds) => {
 
 const hps = exphbs.create({
     helpers: {
+        showToDo: function (toDo) {
+            return `<label><input type="checkbox" ${toDo.done === "on" ? "checked" : ""}><span>${toDo.name}</span></label>`;
+        },
 		getAchievements: function (focusData) {
             let totalMin = 0;
 
@@ -48,21 +51,6 @@ const hps = exphbs.create({
 			});
 			return acvmHtml;
 				
-        },
-        getTotalTime: function (focusData) {
-            let totalTime = 0;
-
-            if(focusData) focusData.forEach((timeString) => {
-                const [startTime, endTime] = timeString.split("|").map(Number);
-                totalTime += Math.floor((endTime - startTime) / 1000);
-            });
-            let hours = Math.floor(totalTime / 3600);
-            totalTime %= 3600;
-            let minutes = Math.floor(totalTime / 60);
-            let seconds = totalTime % 60;
-            return `${hours > 0 ? hours + "hrs" : ""} ${
-                minutes > 0 ? minutes + "min" : ""
-            } ${seconds}secs.`;
         },
         showTime: function (timeData) {
             let [startTime, endTime] = timeData.split("|");
@@ -116,9 +104,20 @@ async function run() {
                     username: result.username,
                 });
                 console.log(uInfo);
+                let totalTime = 0;
+                if (uInfo.focusList) {
+                    uInfo.focusList.forEach((timeString) => {
+						const [startTime, endTime] = timeString
+							.split("|")
+							.map(Number);
+						totalTime += Math.floor((endTime - startTime) / 1000);
+					});
+                }
                 res.render("home", {
                     username: result.username,
                     focusData: uInfo.focusList,
+                    toDos: uInfo.toDos,
+                    totalTime: formatTime(totalTime * 1000)
                 });
             } catch (err) {
                 console.dir(err);
@@ -200,20 +199,86 @@ async function run() {
             const uInfo = await uAuthClx.findOne({ username: username });
             const startTime = req.body.startTime;
             const endTime = req.body.endTime;
-            if (!startTime || !endTime) return;
+            if (!startTime || !endTime) return res.sendStatus(400);
 
-            if (typeof uInfo === "undefined") return;
-            uAuthClx.updateOne(
-                { username: username },
-                {
-                    $push: {
-                        focusList: `${startTime}|${endTime}`,
+            if (typeof uInfo === "undefined") return res.sendStatus(404);;
+            try {
+                uAuthClx.updateOne(
+                    { username: username }, // Filter to get doc
+                    // Update document
+                    {
+                        $push: {
+                            focusList: `${startTime}|${endTime}`,
+                        },
                     },
-                },
-                { upsert: true }
-            );
+                    { upsert: true }
+                );
+            } catch {
+                res.sendStatus(500);
+            }
             res.sendStatus(200);
         });
+
+        app.post("/addToDo", async (req, res) => {
+			const token = req.cookies.authToken;
+
+			if (!token) {
+				res.sendStatus(400);
+			}
+
+			let username = null;
+
+			try {
+				result = jwt.verify(token, key);
+				username = result.username;
+			} catch (err) {
+				return res.sendStatus(403);
+			}
+
+            const toDo = req.body.toDo;
+			if (!toDo) return res.sendStatus(400);
+
+            const uInfo = await uAuthClx.findOne({ username: username });
+
+			if (typeof uInfo === "undefined") return res.sendStatus(404);
+            try {
+                switch (req.body.type) {
+                    case "add":
+                        uAuthClx.updateOne(
+                            { username: username }, // Filter to get document
+                            // Update doc
+                            {
+                                $push: {
+                                    toDos: {
+                                        name: toDo,
+                                        done: false,
+                                    },
+                                },
+                            },
+                            { upsert: true }
+                        );
+                        break;
+                    case "update":
+                        const index = uInfo.toDos.findIndex(todo => todo.name === toDo);
+                        uAuthClx.updateOne(
+                            {
+                                username: username,
+                            },
+                            {
+                                $set: {
+                                    ["toDos." + index  + ".done"]: req.body.done
+                                }
+                            }
+                        )
+                        
+                }
+    			res.sendStatus(200);
+                   
+            } catch {
+                res.sendStatus(500);
+            }
+		});
+
 
         app.post("/login", async (req, res) => {
             let username = req.body.username;

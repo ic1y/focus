@@ -24,9 +24,39 @@ body > * {
 	padding: 0.5rem;
 	font-size: 2rem;
 }
-#end {
+#end, #totalTime {
 	display: none;
 }
+
+#toDoList {
+	width: 20rem;
+	max-width: calc(100vw - 2rem);
+	display: flex;
+	justify-content: start;
+	align-items: start;
+	flex-direction: column;
+}
+
+#toDoList > label, #toDoList span {
+	display: flex;
+	flex-direction: row;
+	justify-content: center;
+	align-items: center;
+}
+
+#toDoList > label {
+	margin: 0.25rem 0;
+}
+
+#toDoList > label > * {
+	margin-left: 1rem;
+}
+
+#toDoList > label > input {
+	height: 1.5rem;
+	width: 1.5rem;
+}
+
 #acvm {
 	display: flex;
 	justify-content: center;
@@ -72,6 +102,20 @@ summary {
 	#acvm > div {
 		border-color: white;
 	}
+}
+#inputRow {
+	display: flex;
+	flex-direction: row;
+}
+#enterToDo {
+	margin-left: 1rem;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+#enterToDo > svg {
+	height: 1rem;
+	width: 1rem;
 }
 
 /* https://stackoverflow.com/a/7354648 */

@@ -1,20 +1,78 @@
 const startBtn = document.getElementById("start");
 const endBtn = document.getElementById("end");
 const timeEl = document.getElementById("time");
+const enterToDoBtn = document.getElementById("enterToDo");
+const toDoIn = document.getElementById("addToDo");
+const toDoLi = document.getElementById("toDoList");
 let focusState = false;
 let currentTimeout = null;
 
-const formatTime = (milliseconds, notation) => {
+const addToDo = async () => {
+	let toDo = toDoIn.value;
+	if (toDo.trim().length === 0) return;
+	toDoIn.value = "";
+	const rawResponse = await fetch("/addToDo", {
+		method: "POST",
+		headers: {
+			Accept: "application/json",
+			"Content-Type": "application/json",
+		},
+		body: JSON.stringify({
+			toDo: toDo,
+			type: "add"
+		}),
+	});	
+	if (rawResponse.status === 200) {
+		const toDoLabel = document.createElement("label");
+		const toDoName = document.createElement("span");
+		toDoName.innerText = toDo;
+		const toDoCheck = document.createElement("input");
+		toDoCheck.type = "checkbox";
+		toDoCheck.addEventListener("change", async () => {
+			let done = toDoCheck.value;
+			const rawResponse = await fetch("/addToDo", {
+				method: "POST",
+				headers: {
+					Accept: "application/json",
+					"Content-Type": "application/json",
+				},
+				body: JSON.stringify({
+					toDo: toDo,
+					type: "update",
+					done: done
+				}),
+			});	
+		})
+		toDoLabel.append(toDoCheck, toDoName);
+		toDoLi.appendChild(toDoLabel);
+	}
+}
+
+enterToDoBtn.addEventListener("click", addToDo);
+toDoIn.addEventListener("keydown", (e) => {
+	if (e.key === "Enter") addToDo();
+})
+
+const formatTime = (milliseconds) => {
 	let totalSeconds = Math.floor(milliseconds / 1000);
 	let hours = Math.floor(totalSeconds / 3600);
 	totalSeconds %= 3600;
 	let minutes = Math.floor(totalSeconds / 60);
 	let seconds = totalSeconds % 60;
-	return `${String(hours).padStart(2, "0")}${
-		notation ? "hrs" : ""
-	} : ${String(minutes).padStart(2, "0")}${notation ? "mins" : ""} : ${String(
+	return `${String(hours).padStart(2, "0")} : ${String(minutes).padStart(2, "0")} : ${String(
 		seconds
-	).padStart(2, "0")}${notation ? "secs" : ""}`;
+	).padStart(2, "0")}`;
+};
+
+const fTimewUnits = (milliseconds) => {
+	let totalSeconds = Math.floor(milliseconds / 1000);
+	let hours = Math.floor(totalSeconds / 3600);
+	totalSeconds %= 3600;
+	let minutes = Math.floor(totalSeconds / 60);
+	let seconds = totalSeconds % 60;
+	return `${hours > 0 ? hours + "hrs " : ""}${
+		minutes > 0 ? minutes + "min " : ""
+	}${seconds > 0 ? seconds + "secs" : ""}`;
 };
 
 const beforeUnloadHandler = (e) => {
@@ -73,14 +131,23 @@ const startFocus = () => {
 			})();
 
 			alert(
-				"Good job! You focused for " + formatTime(endTime - startTime)
-			) + "! Feel free to take a short break before continuing.";
+				"Good job! You focused for " +
+				fTimewUnits(endTime - startTime) +
+				"! Feel free to take a short break before continuing."
+			);
+			location.reload();
 		},
 		{ once: true }
 	);
 };
 
 startBtn.addEventListener("click", startFocus);
+
+document.getElementById("logOut").addEventListener("click", () => {
+	const cfm = confirm("Confirmation: log out?");
+	if (cfm === true) document.location.pathname = "/log-out";
+})
+
 document.getElementById("delete").addEventListener("click", async () => {
 	const cfm = prompt("Are you sure you want to delete your account? This action is irreversible! To confirm, enter 'delete':");
 	if (!cfm) return;
