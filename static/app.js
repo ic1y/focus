@@ -15,7 +15,7 @@ const addToDo = async (toDo, done) => {
 	toDoName.innerText = toDo;
 	const toDoCheck = document.createElement("input");
 	toDoCheck.type = "checkbox";
-	if (done === "on") { toDoCheck.checked === "on"; }
+	if (done === "on") { toDoCheck.checked = "on" }
 	toDoCheck.addEventListener("change", async () => {
 		let done = toDoCheck.value;
 		const rawResponse = await fetch("/addToDo", {
