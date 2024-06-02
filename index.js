@@ -290,7 +290,10 @@ async function run() {
         app.post("/login", async (req, res) => {
             let username = req.body.username;
             const password = req.body.password;
-            if (!username || !password) return;
+            if (!username || !password) {
+                res.send("Please provide a username AND password");
+                return;
+            };
             username = username.toLowerCase();
 
             const uInfo = await uAuthClx.findOne({ username: username });
@@ -309,7 +312,11 @@ async function run() {
         app.post("/sign-up", async (req, res) => {
             let username = req.body.username;
             const password = req.body.password;
-            if (!username || !password) return;
+            if (!username || !password) {
+                res.send("Please provide a username AND password");
+                return;                
+
+            };
             username = username.toLowerCase();
 
             const uInfo = await uAuthClx.findOne({ username: username });
