@@ -57,12 +57,21 @@ const addToDo = async (toDo, done) => {
 	});
 }
 
-const toDos = JSON.parse(toDoLi.innerText);
-toDoLi.innerText = ""
-
-for (let i = 0; i < toDos.length; i++) {
-	addToDo(toDos[i].name, toDos[i].done)
-}
+const rawResponse = fetch("/getToDos", {
+	method: "GET",
+	headers: {
+		Accept: "application/json",
+		"Content-Type": "application/json",
+	}
+}).then(resp => {
+	resp.json().then(json => {
+		const toDos = json.toDos;
+		// console.log("todos:" + JSON.stringify(toDos));
+		for (let i = 0; i < toDos.length; i++) {
+			addToDo(toDos[i].name, toDos[i].done);
+		}
+	});
+});	
 
 const makeToDo = async () => {
 	let toDo = toDoIn.value;

@@ -220,6 +220,33 @@ async function run() {
             res.sendStatus(200);
         });
 
+        app.get("/getToDos", async (req, res) => {
+            const token = req.cookies.authToken;
+
+			if (!token) {
+				res.sendStatus(400);
+			}
+
+			let username = null;
+
+			try {
+				result = jwt.verify(token, key);
+				username = result.username;
+			} catch (err) {
+				return res.sendStatus(403);
+			}
+
+            const uInfo = await uAuthClx.findOne({ username: username });
+
+			if (typeof uInfo === "undefined") return res.sendStatus(404);
+            
+            // if (uInfo.toDos.length > 0) {
+                res.send({toDos: uInfo.toDos });
+            // } else {
+                // res.send({toDos: []})
+            // }
+        })
+
         app.post("/addToDo", async (req, res) => {
 			const token = req.cookies.authToken;
 
@@ -236,15 +263,15 @@ async function run() {
 				return res.sendStatus(403);
 			}
 
-            const toDo = req.body.toDo;
-			if (!toDo) return res.sendStatus(400);
-
             const uInfo = await uAuthClx.findOne({ username: username });
 
 			if (typeof uInfo === "undefined") return res.sendStatus(404);
             try {
                 switch (req.body.type) {
                     case "add":
+                    {
+                        const toDo = req.body.toDo;
+                        if (!toDo) return res.sendStatus(400);
                         uAuthClx.updateOne(
                             { username: username }, // Filter to get document
                             // Update doc
@@ -259,7 +286,11 @@ async function run() {
                             { upsert: true }
                         );
                         break;
+                    }
                     case "update":
+                    {
+                        const toDo = req.body.toDo;
+                        if (!toDo) return res.sendStatus(400);
                         const updateIndex = uInfo.toDos.findIndex(todo => todo.name === toDo);
                         uAuthClx.updateOne(
                             {
@@ -272,10 +303,13 @@ async function run() {
                             }
                         )
                         break;
+                    }
                     case "delete":
-                        const deleteIndex = uInfo.toDos.findIndex(
-							(todo) => todo.name === toDo
-                        );
+                    {
+                        const toDo = req.body.toDo;
+                        if (!toDo) return res.sendStatus(400);
+                
+                        const deleteIndex = uInfo.toDos.findIndex((todo) => todo.name === toDo);
                         if (deleteIndex > -1) {
 							// only splice array when item is found
 							uInfo.toDos.splice(deleteIndex, 1); // 2nd parameter means remove one item only
@@ -292,6 +326,7 @@ async function run() {
                             }
                         );
                         break;
+                    }
                     default:
                         res.sendStatus(400);
                         
