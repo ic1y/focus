@@ -114,6 +114,21 @@ async function run() {
 
         app.use("/static", express.static("static"));
 
+        app.use(function (req, res, next) {
+			res.setHeader(
+				"Content-Security-Policy",
+				"default-src 'none'; img-src 'self'; script-src 'self'; style-src 'self' cdn.jsdelivr.net; connect-src 'self'; frame-src www.youtube-nocookie.com;"
+			);
+            res.setHeader(
+				"Strict-Transport-Security",
+				"max-age=31536000"
+            );
+            res.setHeader("X-Content-Type-Options", "nosniff");
+            res.setHeader("X-Frame-Options", "DENY");
+
+			next();
+		});
+
         // Configure Handlebars
         app.engine("handlebars", hps.engine);
         app.set("view engine", "handlebars");
