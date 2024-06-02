@@ -67,6 +67,7 @@ const rawResponse = fetch("/getToDos", {
 }).then(resp => {
 	resp.json().then(json => {
 		const toDos = json.toDos;
+		if (typeof toDos === "undefined") return;
 		// console.log("todos:" + JSON.stringify(toDos));
 		for (let i = 0; i < toDos.length; i++) {
 			addToDo(toDos[i].name, toDos[i].done);

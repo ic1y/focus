@@ -82,10 +82,8 @@ const verify = async (req, res, Clx, deferLogin) => {
     }
 
     let id = null;
-    console.log("token" + token);
     try {
         result = jwt.verify(token, key);
-        console.log("res"+JSON.stringify(result));
         id = result.id;
     } catch (err) {
         res.sendStatus(403);
@@ -138,7 +136,6 @@ async function run() {
                 res.render("home", {
                     username: uInfo.username,
                     focusData: uInfo.focusList,
-                    toDos: JSON.stringify(uInfo.toDos),
                     totalTime: formatTime(totalTime * 1000)
                 });
             } catch (err) {
@@ -173,9 +170,10 @@ async function run() {
         });
 
         app.post("/deleteAccount", async (req, res) => {
-            const uInfo = verify(req, res, uAuthClx)
+            const uInfo = await verify(req, res, uAuthClx)
+            console.log(uInfo)
             try {
-                uAuthClx.deleteOne({ username: uInfo.username })
+                uAuthClx.deleteOne({ _id: uInfo._id });
                 res.clearCookie("authToken");
                 res.sendStatus(200);
             } catch {
@@ -323,7 +321,7 @@ async function run() {
             }
 
             const hashed = bcrypt.hashSync(password, 10);
-            console.log(password, hashed);
+            // console.log(password, hashed);
             const insertionRes = await uAuthClx.insertOne({
                 username: username,
                 password: hashed,
