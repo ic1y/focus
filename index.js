@@ -143,12 +143,11 @@ async function run() {
             }
         });
 
-        app.get("/sign-up", (req, res) => {
-            res.sendFile(__dirname + "/sign-up.html");
-        });
-        app.get("/login", (req, res) => {
-            res.sendFile(__dirname + "/login.html");
-        });
+        ["sign-up", "login", "deleted"].forEach(path => {
+            app.get(`/${path}`, (req, res) => {
+                res.sendFile(`${__dirname}/${path}.html`)
+            })
+        })
 
         function setCookie(id, res) {
             const token = jwt.sign({ id: id.toString() }, key);

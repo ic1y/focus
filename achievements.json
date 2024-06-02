@@ -8,7 +8,7 @@
 		},
 		{
 			"name": "Milly",
-			"description": "Bleh! Too focused! Don't you have any time fo Milly?",
+			"description": "Bleh! Too focused! Don't you have any time for silly Milly?",
 			"imgSrc": "milly.jpg",
 			"req": "10"
 		},
@@ -26,7 +26,7 @@
 		},
 		{
 			"name": "Unico",
-			"description": "Omedetou! Nyan, this deserves a celebration!",
+			"description": "Omedetou! You found a rare Japanese cat!",
 			"imgSrc": "unico.jpg",
 			"req": "180"
 		},
@@ -65,6 +65,31 @@
 			"description": "You've worked immensely hard. Here, have a cheeseburger!",
 			"imgSrc": "cheeseborger.jpg",
 			"req": "12000"
+		},
+		{
+			"name": "Polite",
+			"description": "Yes Sire, how do you do? Very well? That's all very good, Sire.",
+			"imgSrc": "polite.jpg",
+			"req": "18000"
+		},
+		{
+			"name": "Car on Car",
+			"description": "Vroooooooooom...hop on, we heading to town!",
+			"imgSrc": "car.png",
+			"req": "24000"
+		},
+		{
+			"name": "Milk-face",
+			"description": "A cat with an unquenchable thirst for milk. It is likely that he became fat from all the milk.",
+			"imgSrc": "milk.png",
+			"req": "30000"
+		},
+		{
+			"name": "War Cat",
+			"description": "War Cat has seen much...but he's still shocked by how far you have come. Good job!",
+			"imgSrc": "war.png",
+			"req": "36000"
 		}
+
 	]
 }
