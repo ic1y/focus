@@ -1,4 +1,4 @@
-const { MongoClient, ServerApiVersion } = require("mongodb");
+const { MongoClient, ServerApiVersion, ObjectId } = require("mongodb");
 const express = require("express");
 const bodyParser = require("body-parser");
 const cookieParser = require("cookie-parser");
@@ -23,9 +23,6 @@ const formatTime = (milliseconds) => {
 
 const hps = exphbs.create({
     helpers: {
-        // showToDo: function (toDo) {
-        //     return `<label><input type="checkbox" ${toDo.done === "on" ? "checked" : ""}><span>${toDo.name}</span></label>`;
-        // },
 		getAchievements: function (focusData) {
             let totalMin = 0;
 
@@ -39,16 +36,16 @@ const hps = exphbs.create({
             achievements.forEach((acvm) => {
                 const achieved = (totalMin >= acvm.req);
                 acvmHtml += `<div>
-                <img src="${achieved ? ("/static/acvm/" + acvm.imgSrc) : "/static/acvm/mystery.png"}" class="${
+                <img alt="${acvm.name}" src="${achieved ? ("/static/acvm/" + acvm.imgSrc) : "/static/acvm/mystery.png"}" class="${
 					achieved ? "" : "bw"
-				}"><details><summary class="acvmTitle">${acvm.name} ${
+				}"><span class="acvmTitle">${acvm.name} ${
 					achieved ? "✅" : "🔒"
-				}</summary><span>${
+				}</span><span class="acvmDesc">${
 					achieved
 						? acvm.description
 						: "Reach a total focus time of " +
-						  formatTime(acvm.req * 60000)
-				}</span><br></details></div>`;
+                    formatTime(acvm.req * 60000)
+				}</span><br></div>`;
 			});
 			return acvmHtml;
 				
@@ -70,6 +67,31 @@ const client = new MongoClient(uri, {
         deprecationErrors: true,
     },
 });
+
+const verify = async (req, res, Clx) => {
+    const token = req.cookies.authToken;
+
+    if (!token) {
+        res.sendStatus(400);
+    }
+
+    let id = null;
+    console.log("token" + token);
+    try {
+        result = jwt.verify(token, key);
+        console.log("res"+JSON.stringify(result));
+        id = result.id;
+    } catch (err) {
+        return res.sendStatus(403);
+    }
+    console.log("id" + id)
+    id = ObjectId.createFromHexString(id);
+    const uInfo = await Clx.findOne({ _id: id});
+    console.log(uInfo);
+    if (typeof uInfo === null) return res.sendStatus(404);
+    return uInfo;
+}
+
 async function run() {
     try {
         // Connect the client to the server	(optional starting in v4.7)
@@ -92,19 +114,10 @@ async function run() {
         app.set("view engine", "handlebars");
         app.set("views", "./views");
         app.get("/", async (req, res) => {
-            const token = req.cookies.authToken;
-            console.log(token);
-            if (!token) {
-                return res.redirect("/login");
-            }
-
+            const uInfo = await verify(req, res, uAuthClx);
+        
             try {
-                const result = jwt.verify(token, key);
-                console.log(result.username);
-                const uInfo = await uAuthClx.findOne({
-                    username: result.username,
-                });
-                console.log(uInfo.toDos);
+                
                 let totalTime = 0;
                 if (uInfo.focusList) {
                     uInfo.focusList.forEach((timeString) => {
@@ -115,7 +128,7 @@ async function run() {
 					});
                 }
                 res.render("home", {
-                    username: result.username,
+                    username: uInfo.username,
                     focusData: uInfo.focusList,
                     toDos: JSON.stringify(uInfo.toDos),
                     totalTime: formatTime(totalTime * 1000)
@@ -133,8 +146,8 @@ async function run() {
             res.sendFile(__dirname + "/login.html");
         });
 
-        function setCookie(username, res) {
-            const token = jwt.sign({ username: username }, key);
+        function setCookie(id, res) {
+            const token = jwt.sign({ id: id.toString() }, key);
 
             // Set the JWT as an HTTP-only cookie
             res.cookie("authToken", token, {
@@ -152,60 +165,27 @@ async function run() {
         });
 
         app.post("/deleteAccount", async (req, res) => {
-            const token = req.cookies.authToken;
-            console.log(token);
-			if (!token) {
-				return res.sendStatus(400);
-			}
-
+            const uInfo = verify(req, res, uAuthClx)
             try {
-				const result = jwt.verify(token, key);
-				console.log(result.username);
-				const uInfo = await uAuthClx.findOne({
-					username: result.username,
-                });
-                if (typeof uInfo === "undefined") {
-                    return res.sendStatus(404);
-                } else {
-                    try {
-                        uAuthClx.deleteOne({ username: result.username })
-                        res.clearCookie("authToken");
-                        res.sendStatus(200);
-                    } catch {
-                        return res.sendStatus(500);
-                    }
-                }
-			} catch (err) {
-				console.dir(err);
-				return res.sendStatus(403);
-			}
+                uAuthClx.deleteOne({ username: uInfo.username })
+                res.clearCookie("authToken");
+                res.sendStatus(200);
+            } catch {
+                return res.sendStatus(500);
+            }
         })
 
         app.post("/postFocus", async (req, res) => {
-            const token = req.cookies.authToken;
 
-            if (!token) {
-                res.sendStatus(400);
-            }
+            const uInfo = await verify(req, res, uAuthClx);
 
-            let username = null;
-
-            try {
-                result = jwt.verify(token, key);
-                username = result.username;
-            } catch (err) {
-                return res.sendStatus(403);
-            }
-
-            const uInfo = await uAuthClx.findOne({ username: username });
             const startTime = req.body.startTime;
             const endTime = req.body.endTime;
             if (!startTime || !endTime) return res.sendStatus(400);
 
-            if (typeof uInfo === "undefined") return res.sendStatus(404);;
             try {
                 uAuthClx.updateOne(
-                    { username: username }, // Filter to get doc
+                    { username: uInfo.username }, // Filter to get doc
                     // Update document
                     {
                         $push: {
@@ -221,51 +201,15 @@ async function run() {
         });
 
         app.get("/getToDos", async (req, res) => {
-            const token = req.cookies.authToken;
 
-			if (!token) {
-				res.sendStatus(400);
-			}
+            const uInfo = await verify(req, res, uAuthClx);
+            res.send({toDos: uInfo.toDos });
 
-			let username = null;
-
-			try {
-				result = jwt.verify(token, key);
-				username = result.username;
-			} catch (err) {
-				return res.sendStatus(403);
-			}
-
-            const uInfo = await uAuthClx.findOne({ username: username });
-
-			if (typeof uInfo === "undefined") return res.sendStatus(404);
-            
-            // if (uInfo.toDos.length > 0) {
-                res.send({toDos: uInfo.toDos });
-            // } else {
-                // res.send({toDos: []})
-            // }
         })
 
         app.post("/addToDo", async (req, res) => {
-			const token = req.cookies.authToken;
-
-			if (!token) {
-				res.sendStatus(400);
-			}
-
-			let username = null;
-
-			try {
-				result = jwt.verify(token, key);
-				username = result.username;
-			} catch (err) {
-				return res.sendStatus(403);
-			}
-
-            const uInfo = await uAuthClx.findOne({ username: username });
-
-			if (typeof uInfo === "undefined") return res.sendStatus(404);
+            const uInfo = await verify(req, res, uAuthClx);
+            const username = uInfo.username;
             try {
                 switch (req.body.type) {
                     case "add":
@@ -349,7 +293,7 @@ async function run() {
             if (uInfo) {
                 if (bcrypt.compareSync(password, uInfo.password)) {
                     // res.sendStatus(200);
-                    setCookie(username, res);
+                    setCookie(uInfo._id, res);
                 } else {
                     res.send("Wrong Username/Password");
                 }
@@ -372,11 +316,11 @@ async function run() {
 
             const hashed = bcrypt.hashSync(password, 10);
             console.log(password, hashed);
-            uAuthClx.insertOne({
+            const insertionRes = await uAuthClx.insertOne({
                 username: username,
                 password: hashed,
             });
-            setCookie(username, res);
+            setCookie(insertionRes.insertedId, res);
         });
 
         app.listen(3000);

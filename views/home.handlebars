@@ -6,20 +6,26 @@
 <label for="addToDo">Add to-do:</label> 
 <div id="inputRow">
 	<input type="text" id="addToDo">
-	<button id="enterToDo">
-		<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6" title="Enter">
+	<button id="enterToDo" aria-label="Enter to-do">
+		<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
+			<title>Enter to-do</title>
 			<path stroke-linecap="round" stroke-linejoin="round" d="M17.25 8.25 21 12m0 0-3.75 3.75M21 12H3" />
 		</svg>	
 	</button>
 </div>
 <div id="toDoList">
 </div>
+<details>
+	<summary>Play Music (toggle show/hide)</summary>
+	<iframe src="https://www.youtube-nocookie.com/embed/jfKfPfyJRdk?modestbranding=1&rel=0&fs=0" width="320" height="180" title="A YouTube video" frameborder="0"></iframe>
+</details>
 <h2>Achievements:</h2>
 <div id="acvm">
 	{{{getAchievements focusData}}}
 </div>
 {{#if focusData}}
 <h2 id="total">Total focus time: {{totalTime}}</h2>
+<h3>Your focus history:</h3>
 <ul>
 	{{#each focusData}}
 			<li>
