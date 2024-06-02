@@ -15,10 +15,9 @@ const addToDo = async (toDo, done) => {
 	toDoName.innerText = toDo;
 	const toDoCheck = document.createElement("input");
 	toDoCheck.type = "checkbox";
-	if (done === "on") { toDoCheck.checked = "on" }
+	toDoCheck.checked = done;
 	toDoCheck.addEventListener("change", async () => {
-		let done = toDoCheck.value;
-		const rawResponse = await fetch("/addToDo", {
+		await fetch("/addToDo", {
 			method: "POST",
 			headers: {
 				Accept: "application/json",
@@ -27,7 +26,7 @@ const addToDo = async (toDo, done) => {
 			body: JSON.stringify({
 				toDo: toDo,
 				type: "update",
-				done: done,
+				done: toDoCheck.checked,
 			}),
 		});
 	});
@@ -68,9 +67,9 @@ const rawResponse = fetch("/getToDos", {
 	resp.json().then(json => {
 		const toDos = json.toDos;
 		if (typeof toDos === "undefined") return;
-		// console.log("todos:" + JSON.stringify(toDos));
+		console.log("todos:" + JSON.stringify(toDos));
 		for (let i = 0; i < toDos.length; i++) {
-			addToDo(toDos[i].name, toDos[i].done);
+			addToDo(toDos[i].name, Boolean(toDos[i].done));
 		}
 	});
 });	
@@ -198,7 +197,7 @@ document.getElementById("logOut").addEventListener("click", () => {
 
 document.getElementById("delete").addEventListener("click", async () => {
 	const cfm = prompt("Are you sure you want to delete your account? This action is irreversible! To confirm, enter 'delete':");
-	if (!cfm) return;
+	if (cfm === false) return;
 	if (cfm.trim().toLowerCase() === "delete") {
 		const rawResponse = await fetch("/deleteAccount", {
 			method: "POST",

@@ -74,7 +74,6 @@ const verify = async (req, res, Clx, deferLogin) => {
     if (!token) {
         if (deferLogin === true) {
             res.redirect("/login");
-             false;
         } else {
             res.sendStatus(400);
         }
@@ -91,7 +90,7 @@ const verify = async (req, res, Clx, deferLogin) => {
     }
     id = ObjectId.createFromHexString(id);
     const uInfo = await Clx.findOne({ _id: id});
-    if (typeof uInfo === null) {
+    if (uInfo === null) {
         res.sendStatus(404);
         return false;
     }
@@ -121,7 +120,7 @@ async function run() {
         app.set("views", "./views");
         app.get("/", async (req, res) => {
             const uInfo = await verify(req, res, uAuthClx, true);
-            
+            if (uInfo === false) return;
             try {
                 
                 let totalTime = 0;
@@ -139,8 +138,8 @@ async function run() {
                     totalTime: formatTime(totalTime * 1000)
                 });
             } catch (err) {
-                console.dir(err);
-                return res.sendFile(__dirname + "/login.html");
+                res.sendFile(__dirname + "/login.html");
+                return;
             }
         });
 
@@ -177,7 +176,7 @@ async function run() {
                 res.clearCookie("authToken");
                 res.sendStatus(200);
             } catch {
-                return res.sendStatus(500);
+                res.sendStatus(500);
             }
         })
 
@@ -240,7 +239,7 @@ async function run() {
                     case "update":
                     {
                         const toDo = req.body.toDo;
-                        if (!toDo || !req.body.done) return res.sendStatus(400);
+                        if (!toDo || typeof req.body.done === "undefined") return res.sendStatus(400);
                         const updateIndex = uInfo.toDos.findIndex(todo => todo.name === toDo);
                         uAuthClx.updateOne(
                             {
@@ -316,7 +315,7 @@ async function run() {
 
             const uInfo = await uAuthClx.findOne({ username: username });
             if (uInfo) {
-                res.send("username already exists");
+                res.send("Username already exists");
                 return;
             }
 
@@ -331,7 +330,7 @@ async function run() {
 
         app.listen(3000);
     } catch (e) {
-        console.error(e);
+        console.error("Error: " + e);
     }
 }
 
