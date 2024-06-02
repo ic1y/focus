@@ -95,7 +95,7 @@ body > * {
 	clip-path: circle();
 }
 img.bw {
-	filter: brightness(0.25);
+	filter: brightness(0.5);
 }
 details, summary {
 	text-align: center;

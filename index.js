@@ -23,9 +23,9 @@ const formatTime = (milliseconds) => {
 
 const hps = exphbs.create({
     helpers: {
-        showToDo: function (toDo) {
-            return `<label><input type="checkbox" ${toDo.done === "on" ? "checked" : ""}><span>${toDo.name}</span></label>`;
-        },
+        // showToDo: function (toDo) {
+        //     return `<label><input type="checkbox" ${toDo.done === "on" ? "checked" : ""}><span>${toDo.name}</span></label>`;
+        // },
 		getAchievements: function (focusData) {
             let totalMin = 0;
 
@@ -36,18 +36,19 @@ const hps = exphbs.create({
 			});
 						
 			let acvmHtml = "";	
-			achievements.forEach((acvm) => {
+            achievements.forEach((acvm) => {
+                const achieved = (totalMin >= acvm.req);
                 acvmHtml += `<div>
-                <img src="/static/acvm/${acvm.imgSrc}" class="${
-                    totalMin >= acvm.req ? "" : "bw"
-                }"><details><summary class="acvmTitle">${acvm.name} ${
-                    totalMin >= acvm.req ? "✅" : "🔒"
-                }</summary><span>${
-                        totalMin >= acvm.req
-                            ? acvm.description
-                            : "Reach a total focus time of " +
-                                formatTime(acvm.req * 60000)
-                    }</span><br></details></div>`;
+                <img src="${achieved ? ("/static/acvm/" + acvm.imgSrc) : "/static/acvm/mystery.png"}" class="${
+					achieved ? "" : "bw"
+				}"><details><summary class="acvmTitle">${acvm.name} ${
+					achieved ? "✅" : "🔒"
+				}</summary><span>${
+					achieved
+						? acvm.description
+						: "Reach a total focus time of " +
+						  formatTime(acvm.req * 60000)
+				}</span><br></details></div>`;
 			});
 			return acvmHtml;
 				
