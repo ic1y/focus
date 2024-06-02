@@ -68,11 +68,17 @@ const client = new MongoClient(uri, {
     },
 });
 
-const verify = async (req, res, Clx) => {
+const verify = async (req, res, Clx, deferLogin) => {
     const token = req.cookies.authToken;
 
     if (!token) {
-        res.sendStatus(400);
+        if (deferLogin === true) {
+            res.redirect("/login");
+             false;
+        } else {
+            res.sendStatus(400);
+        }
+        return false;
     }
 
     let id = null;
@@ -82,13 +88,15 @@ const verify = async (req, res, Clx) => {
         console.log("res"+JSON.stringify(result));
         id = result.id;
     } catch (err) {
-        return res.sendStatus(403);
+        res.sendStatus(403);
+        return false;
     }
-    console.log("id" + id)
     id = ObjectId.createFromHexString(id);
     const uInfo = await Clx.findOne({ _id: id});
-    console.log(uInfo);
-    if (typeof uInfo === null) return res.sendStatus(404);
+    if (typeof uInfo === null) {
+        res.sendStatus(404);
+        return false;
+    }
     return uInfo;
 }
 
@@ -114,8 +122,8 @@ async function run() {
         app.set("view engine", "handlebars");
         app.set("views", "./views");
         app.get("/", async (req, res) => {
-            const uInfo = await verify(req, res, uAuthClx);
-        
+            const uInfo = await verify(req, res, uAuthClx, true);
+            
             try {
                 
                 let totalTime = 0;
@@ -234,7 +242,7 @@ async function run() {
                     case "update":
                     {
                         const toDo = req.body.toDo;
-                        if (!toDo) return res.sendStatus(400);
+                        if (!toDo || !req.body.done) return res.sendStatus(400);
                         const updateIndex = uInfo.toDos.findIndex(todo => todo.name === toDo);
                         uAuthClx.updateOne(
                             {
