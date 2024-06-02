@@ -103,7 +103,7 @@ async function run() {
                 const uInfo = await uAuthClx.findOne({
                     username: result.username,
                 });
-                console.log(uInfo);
+                console.log(uInfo.toDos);
                 let totalTime = 0;
                 if (uInfo.focusList) {
                     uInfo.focusList.forEach((timeString) => {
@@ -116,7 +116,7 @@ async function run() {
                 res.render("home", {
                     username: result.username,
                     focusData: uInfo.focusList,
-                    toDos: uInfo.toDos,
+                    toDos: JSON.stringify(uInfo.toDos),
                     totalTime: formatTime(totalTime * 1000)
                 });
             } catch (err) {
@@ -259,17 +259,40 @@ async function run() {
                         );
                         break;
                     case "update":
-                        const index = uInfo.toDos.findIndex(todo => todo.name === toDo);
+                        const updateIndex = uInfo.toDos.findIndex(todo => todo.name === toDo);
                         uAuthClx.updateOne(
                             {
                                 username: username,
                             },
                             {
                                 $set: {
-                                    ["toDos." + index  + ".done"]: req.body.done
+                                    ["toDos." + updateIndex + ".done"]: req.body.done
                                 }
                             }
                         )
+                        break;
+                    case "delete":
+                        const deleteIndex = uInfo.toDos.findIndex(
+							(todo) => todo.name === toDo
+                        );
+                        if (deleteIndex > -1) {
+							// only splice array when item is found
+							uInfo.toDos.splice(deleteIndex, 1); // 2nd parameter means remove one item only
+                        } else {
+                            res.sendStatus(404);
+                            break;
+                        }
+                        uAuthClx.updateOne(
+							{ username: username },
+                            {
+                                $set: {
+                                    toDos: uInfo.toDos
+                                }
+                            }
+                        );
+                        break;
+                    default:
+                        res.sendStatus(400);
                         
                 }
     			res.sendStatus(200);

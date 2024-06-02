@@ -7,7 +7,64 @@ const toDoLi = document.getElementById("toDoList");
 let focusState = false;
 let currentTimeout = null;
 
-const addToDo = async () => {
+const addToDo = async (toDo, done) => {
+	const toDoDiv = document.createElement("div");
+	console.log(toDo)
+	const toDoLabel = document.createElement("label");
+	const toDoName = document.createElement("span");
+	toDoName.innerText = toDo;
+	const toDoCheck = document.createElement("input");
+	toDoCheck.type = "checkbox";
+	if (done === "on") { toDoCheck.checked === "on"; }
+	toDoCheck.addEventListener("change", async () => {
+		let done = toDoCheck.value;
+		const rawResponse = await fetch("/addToDo", {
+			method: "POST",
+			headers: {
+				Accept: "application/json",
+				"Content-Type": "application/json",
+			},
+			body: JSON.stringify({
+				toDo: toDo,
+				type: "update",
+				done: done,
+			}),
+		});
+	});
+
+	const deleteBtn = document.createElement("button");
+
+	toDoLabel.append(toDoCheck, toDoName);
+	toDoDiv.append(toDoLabel, deleteBtn);
+	toDoLi.appendChild(toDoDiv);
+
+	deleteBtn.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6"><path stroke-linecap="round" stroke-linejoin="round" d="m14.74 9-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 0 1-2.244 2.077H8.084a2.25 2.25 0 0 1-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 0 0-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 0 1 3.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 0 0-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 0 0-7.5 0" /></svg>`;
+	deleteBtn.addEventListener("click", async () => {
+		const rawResponse = await fetch("/addToDo", {
+			method: "POST",
+			headers: {
+				Accept: "application/json",
+				"Content-Type": "application/json",
+			},
+			body: JSON.stringify({
+				toDo: toDo,
+				type: "delete",
+			}),
+		});
+		if (rawResponse.status === 200) {
+			toDoLi.removeChild(toDoDiv);
+		}
+	});
+}
+
+const toDos = JSON.parse(toDoLi.innerText);
+toDoLi.innerText = ""
+
+for (let i = 0; i < toDos.length; i++) {
+	addToDo(toDos[i].name, toDos[i].done)
+}
+
+const makeToDo = async () => {
 	let toDo = toDoIn.value;
 	if (toDo.trim().length === 0) return;
 	toDoIn.value = "";
@@ -23,34 +80,14 @@ const addToDo = async () => {
 		}),
 	});	
 	if (rawResponse.status === 200) {
-		const toDoLabel = document.createElement("label");
-		const toDoName = document.createElement("span");
-		toDoName.innerText = toDo;
-		const toDoCheck = document.createElement("input");
-		toDoCheck.type = "checkbox";
-		toDoCheck.addEventListener("change", async () => {
-			let done = toDoCheck.value;
-			const rawResponse = await fetch("/addToDo", {
-				method: "POST",
-				headers: {
-					Accept: "application/json",
-					"Content-Type": "application/json",
-				},
-				body: JSON.stringify({
-					toDo: toDo,
-					type: "update",
-					done: done
-				}),
-			});	
-		})
-		toDoLabel.append(toDoCheck, toDoName);
-		toDoLi.appendChild(toDoLabel);
+
+		addToDo(toDo);
 	}
 }
 
-enterToDoBtn.addEventListener("click", addToDo);
+enterToDoBtn.addEventListener("click", makeToDo);
 toDoIn.addEventListener("keydown", (e) => {
-	if (e.key === "Enter") addToDo();
+	if (e.key === "Enter") makeToDo();
 })
 
 const formatTime = (milliseconds) => {
