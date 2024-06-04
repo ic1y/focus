@@ -210,9 +210,13 @@ document.getElementById("delete").addEventListener("click", async () => {
 			})
 		});	
 		// server sends 200 to show successful account deletion (see index.js)
-		if (rawResponse.status === 200) {
-			alert("Your account has been successfully deleted!");
-			document.location = "/deleted";
-		};
+		switch (rawResponse.status) {
+			case (200):
+				location.pathname = "/deleted";
+				break;
+			case (500):
+				alert("Deletion request unsuccessful");
+				break;
+		}
 	};
 })

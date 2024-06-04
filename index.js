@@ -117,12 +117,16 @@ async function run() {
         app.use(function (req, res, next) {
 			res.setHeader(
 				"Content-Security-Policy",
-				"default-src 'none'; img-src 'self'; script-src 'self'; style-src 'self' cdn.jsdelivr.net; connect-src 'self'; frame-src www.youtube-nocookie.com;"
+				"default-src 'none'; img-src 'self'; script-src 'self'; style-src 'self' cdn.jsdelivr.net; connect-src 'self'; frame-src www.youtube-nocookie.com; frame-ancestors 'none'; form-action 'self'; base-uri 'none';"
 			);
             res.setHeader(
 				"Strict-Transport-Security",
 				"max-age=31536000"
             );
+            res.setHeader(
+                "Referrer-Policy",
+                "same-origin"
+            )
             res.setHeader("X-Content-Type-Options", "nosniff");
             res.setHeader("X-Frame-Options", "DENY");
 
@@ -183,8 +187,9 @@ async function run() {
         });
 
         app.post("/deleteAccount", async (req, res) => {
-            const uInfo = await verify(req, res, uAuthClx)
-            console.log(uInfo)
+            const uInfo = await verify(req, res, uAuthClx);
+            if (uInfo === false) return;
+            console.log(uInfo);
             try {
                 uAuthClx.deleteOne({ _id: uInfo._id });
                 res.clearCookie("authToken");
@@ -197,6 +202,7 @@ async function run() {
         app.post("/postFocus", async (req, res) => {
 
             const uInfo = await verify(req, res, uAuthClx);
+            if (uInfo === false) return;
 
             const startTime = req.body.startTime;
             const endTime = req.body.endTime;
@@ -222,12 +228,14 @@ async function run() {
         app.get("/getToDos", async (req, res) => {
 
             const uInfo = await verify(req, res, uAuthClx);
+            if (uInfo === false) return;
             res.send({toDos: uInfo.toDos });
 
         })
 
         app.post("/addToDo", async (req, res) => {
             const uInfo = await verify(req, res, uAuthClx);
+            if (uInfo === false) return;
             const username = uInfo.username;
             try {
                 switch (req.body.type) {
