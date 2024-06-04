@@ -7,7 +7,7 @@ html {
 }
 body {
 	padding: 1rem;
-	font-size: 1.25rem;
+	font-size: 1rem;
 }
 body, form {
 	display: flex;
@@ -18,11 +18,31 @@ body, form {
 input {
 	font-size: inherit;
 }
-body > *, form > * {
+body > *{
 	margin: 0.5rem 0;
+}
+body > h2 > a {
+	text-align: center;
+	display: block;
+	width: 10rem;
+	padding: 0.5rem;
+	border: 1px solid #000;
+}
+#screenshots {
+	display: flex;
+	flex-direction: row;
+	column-gap: 1rem;
+}
+#screenshots > a > img {
+	width: calc(50vw - 2rem);
+	max-width: 20rem;
+	border: 1px solid #000;
 }
 @media (prefers-color-scheme: dark) {
 	html {
 		color-scheme: dark;
+	}
+	#screenshots > a > img, body > h2 > a {
+		border: 1px solid #fff;
 	}
 }

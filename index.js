@@ -73,7 +73,7 @@ const verify = async (req, res, Clx, deferLogin) => {
 
     if (!token) {
         if (deferLogin === true) {
-            res.redirect("/login");
+            res.sendFile(__dirname + "/intro.html");
         } else {
             res.sendStatus(400);
         }
@@ -358,6 +358,7 @@ async function run() {
         });
 
         app.listen(3000);
+        console.log("http://localhost:3000")
     } catch (e) {
         console.error("Error: " + e);
     }
