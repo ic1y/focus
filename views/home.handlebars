@@ -1,3 +1,5 @@
+<main>
+
 <h1>Welcome back, {{username}}</h1>
 <span id="time">&nbsp;</span>
 <button id="start">Start a focus</button>
@@ -14,8 +16,9 @@
 	</button>
 </div>
 <div id="toDoList">
+	{{toDos}}
 </div>
-<details>
+<details id="yt">
 	<summary>Play Music (toggle show/hide)</summary>
 	<iframe src="https://www.youtube-nocookie.com/embed/jfKfPfyJRdk?modestbranding=1&rel=0&fs=0" width="320" height="180" title="A YouTube video" frameborder="0"></iframe>
 </details>
@@ -23,18 +26,25 @@
 <div id="acvm">
 	{{{getAchievements focusData}}}
 </div>
-{{#if focusData}}
-<h2 id="total">Total focus time: {{totalTime}}</h2>
+{{!-- Rendered client-side to reduce server side load --}}
+<h2 id="total" data-total="{{getTotalTime focusData}}"></h2> 
 <h3>Your focus history:</h3>
-<ul>
+<ul id="focusList">
 	{{#each focusData}}
 			<li>
 				{{showTime this}}					
 			</li>
 	{{/each}}
 </ul>
-{{/if}}
 <button id="logOut">Log out of account</button>
 <button id="delete">Delete account and data</button>
 <span>Focus is made by Gilbert. Want to report a error/request a feature? Please <a href="mailto:ggohnchs@gmail.com">contact the webmaster</a></span>
+
+</main>
+<dialog>
+	<h2 id="dlgTitle"></h2>
+	<span>Click to unlock character!</span>
+	<img id="dlgImg" src="" alt="">
+	<button id="closeDlg" type="button">Close Dialog</button>
+</dialog>
 <script src="/static/app.js"></script>

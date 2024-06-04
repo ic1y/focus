@@ -4,6 +4,7 @@ const timeEl = document.getElementById("time");
 const enterToDoBtn = document.getElementById("enterToDo");
 const toDoIn = document.getElementById("addToDo");
 const toDoLi = document.getElementById("toDoList");
+const focusLi = document.getElementById("focusList")
 let focusState = false;
 let currentTimeout = null;
 
@@ -57,22 +58,14 @@ const addToDo = async (toDo, done) => {
 	});
 }
 
-const rawResponse = fetch("/getToDos", {
-	method: "GET",
-	headers: {
-		Accept: "application/json",
-		"Content-Type": "application/json",
+const toDos = JSON.parse(toDoLi.innerText);
+toDoLi.innerText = "";
+if (toDos.length !== 0) {
+	console.log("todos:" + JSON.stringify(toDos));
+	for (let i = 0; i < toDos.length; i++) {
+		addToDo(toDos[i].name, Boolean(toDos[i].done));
 	}
-}).then(resp => {
-	resp.json().then(json => {
-		const toDos = json.toDos;
-		if (typeof toDos === "undefined") return;
-		console.log("todos:" + JSON.stringify(toDos));
-		for (let i = 0; i < toDos.length; i++) {
-			addToDo(toDos[i].name, Boolean(toDos[i].done));
-		}
-	});
-});	
+}
 
 const makeToDo = async () => {
 	let toDo = toDoIn.value;
@@ -118,8 +111,57 @@ const fTimewUnits = (milliseconds) => {
 	let minutes = Math.floor(totalSeconds / 60);
 	let seconds = totalSeconds % 60;
 	return `${hours > 0 ? hours + "hrs " : ""}${
-		minutes > 0 ? minutes + "min " : ""
+		minutes > 0 ? minutes + "mins " : ""
 	}${seconds > 0 ? seconds + "secs" : ""}`;
+};
+
+const totalEl = document.getElementById("total");
+let totalTime = Number(totalEl.dataset.total);
+if(totalTime > 0) totalEl.innerText = "Total focus time: " + fTimewUnits(totalTime * 1000);
+
+const dlg = document.querySelector("dialog");
+const dlgTitle = document.getElementById("dlgTitle");
+const dlgImg = document.getElementById("dlgImg");
+const closeDlg = document.getElementById("closeDlg");
+
+const unlockAchv = (el, benchM) => {
+	closeDlg.style.display = "none";
+	dlgImg.src = "/static/acvm/mystery.png";
+	dlgTitle.innerText = `You got '${el.dataset.name}'!\n`
+	dlgImg.addEventListener("click", () => {
+		dlgImg.src = "/static/acvm/" + el.dataset.src;
+		closeDlg.style.display = "block";
+	}, {once: true});
+	closeDlg.addEventListener("click", () => {
+		document.body.classList.remove("dlgOpen");
+		const acvmImg = el.children[0];
+		acvmImg.src = "/static/acvm/" + el.dataset.src;
+		acvmImg.classList.remove("bw");
+		dlg.close();
+		dlg.style.display = "none";
+		el.children[1].innerText = el.dataset.name + " ✅";
+		el.children[2].innerText = el.dataset.desc;
+		checkAcvm(benchM);
+	}, { once: true });
+	document.body.classList.add("dlgOpen");
+	dlg.style.display = "flex";
+	dlg.open = true;
+}
+
+const checkAcvm = (benchM) => {;
+	console.log("bench mark" + benchM);
+	const firstEl = document.querySelectorAll('div[data-achv="0"]')[0];
+	if (!firstEl) return;
+
+	if (benchM >= Number(firstEl.dataset.req)) {
+		// alert("achv reached!");
+		console.log(true);
+
+		firstEl.dataset.achv = "1";
+		unlockAchv(firstEl, benchM);
+	} else {
+		return;
+	}
 };
 
 const beforeUnloadHandler = (e) => {
@@ -179,10 +221,21 @@ const startFocus = () => {
 
 			alert(
 				"Good job! You focused for " +
-				fTimewUnits(endTime - startTime) +
-				"! Feel free to take a short break before continuing."
+					fTimewUnits(endTime - startTime) +
+					"! Feel free to take a short break before continuing."
 			);
-			location.reload();
+
+			totalTime += Math.floor((endTime - startTime) / 1000);
+			totalEl.innerText = "Total focus time: " + fTimewUnits(totalTime * 1000);
+			checkAcvm(Math.floor(totalTime / 60));
+
+			const listEntry = document.createElement("li");
+			const startDT = new Date(startTime).toLocaleString();
+			listEntry.innerText = `On ${startDT}, you focused for ${fTimewUnits(
+				endTime - startTime
+			)}.`;
+			focusLi.insertBefore(listEntry, focusLi.firstChild);
+			// location.reload();
 		},
 		{ once: true }
 	);

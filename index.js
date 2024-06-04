@@ -9,17 +9,7 @@ require("dotenv").config();
 const key = process.env.jwt_key;
 const uri = process.env.mongodb_URI;
 const achievements = require("./achievements.json").achievements;
-
-const formatTime = (milliseconds) => {
-	let totalSeconds = Math.floor(milliseconds / 1000);
-	let hours = Math.floor(totalSeconds / 3600);
-	totalSeconds %= 3600;
-	let minutes = Math.floor(totalSeconds / 60);
-	let seconds = totalSeconds % 60;
-	return `${hours > 0 ? hours + "hrs " : ""}${
-		minutes > 0 ? minutes + "min " : ""
-	}${seconds > 0 ? seconds + "secs" : ""}`;
-}
+const { formatTime } = require("./utils");
 
 const hps = exphbs.create({
     helpers: {
@@ -35,20 +25,22 @@ const hps = exphbs.create({
 			let acvmHtml = "";	
             achievements.forEach((acvm) => {
                 const achieved = (totalMin >= acvm.req);
-                acvmHtml += `<div>
-                <img alt="${acvm.name}" src="${achieved ? ("/static/acvm/" + acvm.imgSrc) : "/static/acvm/mystery.png"}" class="${
-					achieved ? "" : "bw"
+                acvmHtml += `<div data-name="${acvm.name}" data-desc="${acvm.description}" data-req="${acvm.req}" data-achv="${
+					achieved ? 1 : 0
+				}" data-src="${acvm.imgSrc}"><img alt="${acvm.name}" src="${
+					achieved
+						? "/static/acvm/" + acvm.imgSrc
+						: "/static/acvm/mystery.png"
 				}"><span class="acvmTitle">${acvm.name} ${
 					achieved ? "✅" : "🔒"
 				}</span><span class="acvmDesc">${
 					achieved
 						? acvm.description
 						: "Reach a total focus time of " +
-                    formatTime(acvm.req * 60000)
+						  formatTime(acvm.req * 60000)
 				}</span><br></div>`;
 			});
-			return acvmHtml;
-				
+			return acvmHtml;				
         },
         showTime: function (timeData) {
             let [startTime, endTime] = timeData.split("|");
@@ -57,6 +49,21 @@ const hps = exphbs.create({
             let date = new Date(Number(startTime));
             return `On ${date.toLocaleString()}, you focused for ${formatTime(milliseconds)}.`;
         },
+        getTotalTime: function (focusData) {
+            let totalSeconds = 0;
+
+            if (focusData)
+                focusData.forEach((timeString) => {
+                    const [startTime, endTime] = timeString
+                        .split("|")
+                        .map(Number);
+                    const seconds = Math.floor(
+                        (endTime - startTime) / 1000
+                    );
+                    totalSeconds += seconds;
+                });
+            return totalSeconds;
+        }
     },
 });
 // Create a MongoClient with a MongoClientOptions object to set the Stable API version
@@ -140,21 +147,13 @@ async function run() {
         app.get("/", async (req, res) => {
             const uInfo = await verify(req, res, uAuthClx, true);
             if (uInfo === false) return;
+            const focusData = uInfo.focusList || [];
+            const toDoData = uInfo.toDos || [];
             try {
-                
-                let totalTime = 0;
-                if (uInfo.focusList) {
-                    uInfo.focusList.forEach((timeString) => {
-						const [startTime, endTime] = timeString
-							.split("|")
-							.map(Number);
-						totalTime += Math.floor((endTime - startTime) / 1000);
-					});
-                }
                 res.render("home", {
                     username: uInfo.username,
-                    focusData: uInfo.focusList,
-                    totalTime: formatTime(totalTime * 1000)
+                    focusData: focusData.reverse(),
+                    toDos: JSON.stringify(toDoData)
                 });
             } catch (err) {
                 res.sendFile(__dirname + "/login.html");
@@ -173,11 +172,11 @@ async function run() {
 
             // Set the JWT as an HTTP-only cookie
             res.cookie("authToken", token, {
-                httpOnly: true, // Accessible only by the server
-                secure: true, // Only send over HTTPS
-                maxAge: 3600000, // 1 hour expiration
-                sameSite: "strict", // Strict same-site policy
-            });
+				httpOnly: true, // Accessible only by the server
+				secure: true, // Only send over HTTPS
+				maxAge: 7776000000, // = 90 * 24 * 60 * 60 * 1000, 90 day expiration
+				sameSite: "strict", // Strict same-site policy
+			});
             res.redirect("/");
         }
 

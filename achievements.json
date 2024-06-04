@@ -4,92 +4,148 @@
 			"name": "Capybara",
 			"description": "You are focused like capybara. Capybara applauds you.",
 			"imgSrc": "capy.jpg",
-			"req": "5"
+			"req": 5,
+			"rarity": 1
 		},
 		{
 			"name": "Milly",
 			"description": "Bleh! Too focused! Don't you have any time for silly Milly?",
 			"imgSrc": "milly.jpg",
-			"req": "10"
+			"req": 10,
+			"rarity": 1
 		},
 		{
 			"name": "Doge",
 			"description": "Wow! Such focus! Much zen! So proud. Much wow!",
 			"imgSrc": "doge.jpg",
-			"req": "25"
+			"req": 25,
+			"rarity": 1
 		},
 		{
 			"name": "Floppa",
 			"description": "Zdravstvuy, tovarisch! Big focus energy. Keep going!",
 			"imgSrc": "floppa.jpg",
-			"req": "60"
+			"req": 60,
+			"rarity": 1
 		},
 		{
 			"name": "Unico",
 			"description": "Omedetou! You found a rare Japanese cat!",
 			"imgSrc": "unico.jpg",
-			"req": "180"
+			"req": 180,
+			"rarity": 2
 		},
 		{
 			"name": "Gusic",
 			"description": "Hmm...hmm...I smell someone silly!",
 			"imgSrc": "gusic.jpg",
-			"req": "360"
+			"req": 360,
+			"rarity": 2
 		},
 		{
-			"name": "Pop cat",
-			"description": "Pop pop pop pop pop! Keep popping!",
-			"imgSrc": "popcat.jpg",
-			"req": "720"
-		},
-		{
-			"name": "Maxwell",
-			"description": "Beep boop. The focusmaxxing never stops!",
-			"imgSrc": "maxwell.jpg",
-			"req": "1440"
-		},
-		{
-			"name": "Luna",
-			"description": "Crunch crunch! Take a break, let's eat raw uranium together!",
-			"imgSrc": "luna.jpg",
-			"req": "2880"
-		},
-		{
-			"name": "Nyan Cat",
-			"description": "Nyan nyan nyan nyan nyan nyan nyan nyan nyan nyan",
-			"imgSrc": "nyan.png",
-			"req": "6000"
-		},
-		{
-			"name": "Borger",
-			"description": "You've worked immensely hard. Here, have a cheeseburger!",
-			"imgSrc": "cheeseborger.jpg",
-			"req": "12000"
-		},
-		{
-			"name": "Polite",
+			"name": "Mr. Polite",
 			"description": "Yes Sire, how do you do? Very well? That's all very good, Sire.",
 			"imgSrc": "polite.jpg",
-			"req": "18000"
+			"req": 720,
+			"rarity": 2
 		},
 		{
-			"name": "Car on Car",
-			"description": "Vroooooooooom...hop on, we heading to town!",
-			"imgSrc": "car.png",
-			"req": "24000"
+			"name": "Pop Cat",
+			"description": "Pop pop pop pop pop! Keep popping!",
+			"imgSrc": "popcat.jpg",
+			"req": 1440,
+			"rarity": 3
 		},
 		{
 			"name": "Milk-face",
 			"description": "A cat with an unquenchable thirst for milk. It is likely that he became fat from all the milk.",
 			"imgSrc": "milk.png",
-			"req": "30000"
+			"req": 2880,
+			"rarity": 3
+		},
+		{
+			"name": "Maxwell",
+			"description": "Beep boop. The focusmaxxing never stops!",
+			"imgSrc": "maxwell.jpg",
+			"req": 6000,
+			"rarity": 3
+		},
+		{
+			"name": "Luna",
+			"description": "Crunch crunch! Take a break, let's eat raw uranium together!",
+			"imgSrc": "luna.jpg",
+			"req": 9000,
+			"rarity": 3
+		},
+		{
+			"name": "Nyan Cat",
+			"description": "Nyan nyan nyan nyan nyan nyan nyan nyan nyan nyan",
+			"imgSrc": "nyan.png",
+			"req": 12000,
+			"rarity": 3
+		},
+		{
+			"name": "Borger",
+			"description": "You've worked immensely hard. Here, have a cheeseburger!",
+			"imgSrc": "cheeseborger.jpg",
+			"req": 15000,
+			"rarity": 3
+		},
+		{
+			"name": "Car on Car",
+			"description": "Vroooooooooom...hop on, we heading to town!",
+			"imgSrc": "car.png",
+			"req": 18000,
+			"rarity": 4
+		},
+		{
+			"name": "Cat-caller",
+			"description": "Good morning sir, how can I help you? Ah yes, do try turning it off and on. Hopefully that works.",
+			"imgSrc": "callcentre.png",
+			"req": 21000,
+			"rarity": 3
+		},
+		{
+			"name": "Mrs. Eeper",
+			"description": "An eepy lady, often seen eeping in front of the feeders. Sometimes, she eeps in a loaf position. Please don't disturb her!",
+			"imgSrc": "mrseeper.png",
+			"req": 24000,
+			"rarity": 4
+		},
+		{
+			"name": "Mr. Croissant",
+			"description": "A cute cat that resembles a croissant. Lives at Happy Canteen.",
+			"imgSrc": "croissant.jpg",
+			"req": 27000,
+			"rarity": 4
+		},
+		{
+			"name": "Goobert",
+			"description": "Goobert is a bit of a goober, he's very silly, but he's also brave as he took down Mt. Kibble once. Goobert is a very special boy. Treat him with kindness.",
+			"imgSrc": "goobert.jpg",
+			"req": 30000,
+			"rarity": 4
+		},
+		{
+			"name": "Mr. Fresh",
+			"description": "Mr. Fresh only wants fresh kibbles and snacks. He'll wait for as long as it takes, until he gets it.",
+			"imgSrc": "mrfresh.jpg",
+			"req": 33000,
+			"rarity": 5
+		},
+		{
+			"name": "Stinkwalker",
+			"description": "The stinkwalker is the manifestation of decay and despair. Even miles away, his presence can be acutely felt.",
+			"imgSrc": "stinkwalker.jpg",
+			"req": 36000,
+			"rarity": 5
 		},
 		{
 			"name": "War Cat",
 			"description": "War Cat has seen much...but he's still shocked by how far you have come. Good job!",
 			"imgSrc": "war.png",
-			"req": "36000"
+			"req": 39000,
+			"rarity": 5
 		}
-
 	]
 }
