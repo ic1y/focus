@@ -21,6 +21,9 @@ input {
 body > *, form > * {
 	margin: 0.5rem 0;
 }
+input[type="submit"] {
+	padding: 0.25rem 1rem;
+}
 @media (prefers-color-scheme: dark) {
 	html {
 		color-scheme: dark;
