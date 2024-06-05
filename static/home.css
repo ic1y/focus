@@ -17,6 +17,10 @@ body, main {
 main {
 	padding: 1rem;
 }
+#install {
+	display: none;
+	font-weight: 700;
+}
 #time {
 	font-size: 2rem;
 	padding: 1rem;
