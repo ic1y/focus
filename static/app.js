@@ -4,11 +4,16 @@ const timeEl = document.getElementById("time");
 const enterToDoBtn = document.getElementById("enterToDo");
 const toDoIn = document.getElementById("addToDo");
 const toDoLi = document.getElementById("toDoList");
-const focusLi = document.getElementById("focusList")
+const focusLi = document.getElementById("focusList");
+const histTitle = document.getElementById("histTitle");
 let focusState = false;
 let currentTimeout = null;
 
-const addToDo = async (toDo, done) => {
+if (focusLi.children.length === 0) {
+	histTitle.style.display = "none";
+}
+
+const showToDo = async (toDo, done) => {
 	const toDoDiv = document.createElement("div");
 	console.log(toDo)
 	const toDoLabel = document.createElement("label");
@@ -18,7 +23,7 @@ const addToDo = async (toDo, done) => {
 	toDoCheck.type = "checkbox";
 	toDoCheck.checked = done;
 	toDoCheck.addEventListener("change", async () => {
-		await fetch("/addToDo", {
+		const rawResponse = await fetch("/addToDo", {
 			method: "POST",
 			headers: {
 				Accept: "application/json",
@@ -30,17 +35,46 @@ const addToDo = async (toDo, done) => {
 				done: toDoCheck.checked,
 			}),
 		});
+		if (rawResponse.status !== 200) alert("Failed to change to-do");
 	});
 
+	const btnsDiv = document.createElement("div");
+	// const changeBtn = document.createElement("button");
 	const deleteBtn = document.createElement("button");
+	btnsDiv.append(deleteBtn);
 
 	toDoLabel.append(toDoCheck, toDoName);
-	toDoDiv.append(toDoLabel, deleteBtn);
+	toDoDiv.append(toDoLabel, btnsDiv);
 	toDoLi.appendChild(toDoDiv);
 
+	// changeBtn.ariaLabel = "Change to-do";
+	// changeBtn.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><title>Change to-do</title><path stroke-linecap="round" stroke-linejoin="round" d="m16.862 4.487 1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L10.582 16.07a4.5 4.5 0 0 1-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 0 1 1.13-1.897l8.932-8.931Zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0 1 15.75 21H5.25A2.25 2.25 0 0 1 3 18.75V8.25A2.25 2.25 0 0 1 5.25 6H10" /></svg>'
+	// changeBtn.addEventListener("click", async () => {
+	// 	const prm = prompt("Current to-do: " + toDoName.innerText + "\nChange to-do name:")
+	// 	if (prm === null) return;
+	// 	const rawResponse = await fetch("/addToDo", {
+	// 		method: "POST",
+	// 		headers: {
+	// 			Accept: "application/json",
+	// 			"Content-Type": "application/json",
+	// 		},
+	// 		body: JSON.stringify({
+	// 			toDo: prm,
+	// 			type: "update",
+	// 			done: toDoCheck.checked,
+	// 		}),
+	// 	});
+	// 	if (rawResponse.status === 200) {
+	// 		toDoName.innerText = prm;
+	// 	} else {
+	// 		alert("Failed to change to-do");
+	// 	}
+	// })
+
 	deleteBtn.ariaLabel = "Delete to-do";
-	deleteBtn.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6"><title>Delete to-do</title><path stroke-linecap="round" stroke-linejoin="round" d="m14.74 9-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 0 1-2.244 2.077H8.084a2.25 2.25 0 0 1-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 0 0-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 0 1 3.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 0 0-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 0 0-7.5 0" /></svg>`;
+	deleteBtn.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><title>Delete to-do</title><path stroke-linecap="round" stroke-linejoin="round" d="m14.74 9-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 0 1-2.244 2.077H8.084a2.25 2.25 0 0 1-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 0 0-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 0 1 3.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 0 0-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 0 0-7.5 0" /></svg>';
 	deleteBtn.addEventListener("click", async () => {
+		if (confirm(`Please confirm: delete '${toDoName.innerText}'?`) !== true) return; // require user confirmation for toDo deletion
 		const rawResponse = await fetch("/addToDo", {
 			method: "POST",
 			headers: {
@@ -54,6 +88,8 @@ const addToDo = async (toDo, done) => {
 		});
 		if (rawResponse.status === 200) {
 			toDoLi.removeChild(toDoDiv);
+		} else {
+			alert("Failed to remove to-do");
 		}
 	});
 }
@@ -63,11 +99,11 @@ toDoLi.innerText = "";
 if (toDos.length !== 0) {
 	console.log("todos:" + JSON.stringify(toDos));
 	for (let i = 0; i < toDos.length; i++) {
-		addToDo(toDos[i].name, Boolean(toDos[i].done));
+		showToDo(toDos[i].name, Boolean(toDos[i].done));
 	}
 }
 
-const makeToDo = async () => {
+const createToDo = async () => {
 	let toDo = toDoIn.value;
 	if (toDo.trim().length === 0) return;
 	toDoIn.value = "";
@@ -84,40 +120,36 @@ const makeToDo = async () => {
 	});	
 	if (rawResponse.status === 200) {
 
-		addToDo(toDo);
+		showToDo(toDo);
 	}
 }
 
-enterToDoBtn.addEventListener("click", makeToDo);
+enterToDoBtn.addEventListener("click", createToDo);
 toDoIn.addEventListener("keydown", (e) => {
-	if (e.key === "Enter") makeToDo();
+	if (e.key === "Enter") createToDo();
 })
 
-const formatTime = (milliseconds) => {
+const formatTime = (milliseconds, units) => {
 	let totalSeconds = Math.floor(milliseconds / 1000);
 	let hours = Math.floor(totalSeconds / 3600);
 	totalSeconds %= 3600;
 	let minutes = Math.floor(totalSeconds / 60);
 	let seconds = totalSeconds % 60;
-	return `${String(hours).padStart(2, "0")} : ${String(minutes).padStart(2, "0")} : ${String(
-		seconds
-	).padStart(2, "0")}`;
-};
-
-const fTimewUnits = (milliseconds) => {
-	let totalSeconds = Math.floor(milliseconds / 1000);
-	let hours = Math.floor(totalSeconds / 3600);
-	totalSeconds %= 3600;
-	let minutes = Math.floor(totalSeconds / 60);
-	let seconds = totalSeconds % 60;
-	return `${hours > 0 ? hours + "hrs " : ""}${
-		minutes > 0 ? minutes + "mins " : ""
-	}${seconds > 0 ? seconds + "secs" : ""}`;
+	if (units === true) {
+		return `${hours > 0 ? hours + "hrs " : ""}${
+			minutes > 0 ? minutes + "mins " : ""
+		}${seconds > 0 ? seconds + "secs" : ""}`;
+	} else {
+		return `${String(hours).padStart(2, "0")} : ${String(minutes).padStart(
+			2,
+			"0"
+		)} : ${String(seconds).padStart(2, "0")}`;
+	}
 };
 
 const totalEl = document.getElementById("total");
 let totalTime = Number(totalEl.dataset.total);
-if(totalTime > 0) totalEl.innerText = "Total focus time: " + fTimewUnits(totalTime * 1000);
+if(totalTime > 0) totalEl.innerText = "Total focus time: " + formatTime(totalTime * 1000, true);
 
 const dlg = document.querySelector("dialog");
 const dlgTitle = document.getElementById("dlgTitle");
@@ -221,21 +253,24 @@ const startFocus = () => {
 
 			alert(
 				"Good job! You focused for " +
-					fTimewUnits(endTime - startTime) +
+					formatTime((endTime - startTime), true) +
 					"! Feel free to take a short break before continuing."
 			);
 
 			totalTime += Math.floor((endTime - startTime) / 1000);
-			totalEl.innerText = "Total focus time: " + fTimewUnits(totalTime * 1000);
+			totalEl.innerText = "Total focus time: " + formatTime((totalTime * 1000), true);
 			checkAcvm(Math.floor(totalTime / 60));
 
 			const listEntry = document.createElement("li");
 			const startDT = new Date(startTime).toLocaleString();
-			listEntry.innerText = `On ${startDT}, you focused for ${fTimewUnits(
-				endTime - startTime
+			listEntry.innerText = `On ${startDT}, you focused for ${formatTime(
+				(endTime - startTime),
+				true
 			)}.`;
+			if (focusLi.children.length === 0) {
+				histTitle.style.display = "block";
+			}
 			focusLi.insertBefore(listEntry, focusLi.firstChild);
-			// location.reload();
 		},
 		{ once: true }
 	);
@@ -250,7 +285,7 @@ document.getElementById("logOut").addEventListener("click", () => {
 
 document.getElementById("delete").addEventListener("click", async () => {
 	const cfm = prompt("Are you sure you want to delete your account? This action is irreversible! To confirm, enter 'delete':");
-	if (cfm === false) return;
+	if (cfm === false) return; 
 	if (cfm.trim().toLowerCase() === "delete") {
 		const rawResponse = await fetch("/deleteAccount", {
 			method: "POST",

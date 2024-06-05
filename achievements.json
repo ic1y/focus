@@ -9,35 +9,35 @@
 		},
 		{
 			"name": "Milly",
-			"description": "Bleh! Too focused! Don't you have any time for silly Milly?",
+			"description": "Milly likes to stick his tongue out. \"Bleh! Too focused! Don't you have any time for silly Milly?\"",
 			"imgSrc": "milly.jpg",
 			"req": 10,
 			"rarity": 1
 		},
 		{
 			"name": "Doge",
-			"description": "Wow! Such focus! Much zen! So proud. Much wow!",
+			"description": "\"Wow! Such focus! Much zen! So proud. Much wow!\" Kabosu-chan seems to be very impressed by you and your ability to focus.",
 			"imgSrc": "doge.jpg",
 			"req": 25,
 			"rarity": 1
 		},
 		{
 			"name": "Floppa",
-			"description": "Zdravstvuy, tovarisch! Big focus energy. Keep going!",
+			"description": "Floppa is a caracal living in Moscat, Russia. His ears are a bit silly. Don't poke fun at him, though, he will take offence.",
 			"imgSrc": "floppa.jpg",
 			"req": 60,
 			"rarity": 1
 		},
 		{
 			"name": "Unico",
-			"description": "Omedetou! You found a rare Japanese cat!",
+			"description": "Omedetou! You found a rare Japanese cat! Unico is a cat that likes to sit in a box.",
 			"imgSrc": "unico.jpg",
 			"req": 180,
 			"rarity": 2
 		},
 		{
 			"name": "Gusic",
-			"description": "Hmm...hmm...I smell someone silly!",
+			"description": "Gusic stares at you intensely: Hmm...hmm...I smell someone silly!",
 			"imgSrc": "gusic.jpg",
 			"req": 360,
 			"rarity": 2
@@ -51,7 +51,7 @@
 		},
 		{
 			"name": "Pop Cat",
-			"description": "Pop pop pop pop pop! Keep popping!",
+			"description": "Pop pop pop pop pop! Pop pop pop pop pop!",
 			"imgSrc": "popcat.jpg",
 			"req": 1440,
 			"rarity": 3
@@ -60,91 +60,112 @@
 			"name": "Milk-face",
 			"description": "A cat with an unquenchable thirst for milk. It is likely that he became fat from all the milk.",
 			"imgSrc": "milk.png",
-			"req": 2880,
+			"req": 3000,
 			"rarity": 3
 		},
 		{
 			"name": "Maxwell",
-			"description": "Beep boop. The focusmaxxing never stops!",
+			"description": "Real name: Jess. Maxwell is a tuxedo cat who likes to spin around endlessly. It's curious how he doesn't get dizzy. He is probably very powerful, but he's not showing it.",
 			"imgSrc": "maxwell.jpg",
 			"req": 6000,
 			"rarity": 3
 		},
 		{
 			"name": "Luna",
-			"description": "Crunch crunch! Take a break, let's eat raw uranium together!",
+			"description": "Luna likes her uranium very much. In fact, she likes it raw. She is often seen crunching on it.",
 			"imgSrc": "luna.jpg",
 			"req": 9000,
 			"rarity": 3
 		},
 		{
 			"name": "Nyan Cat",
-			"description": "Nyan nyan nyan nyan nyan nyan nyan nyan nyan nyan",
+			"description": "\"Nyan nyan nyan nyan nyan nyan nyan nyan nyan nyan nyan nyan nyan nyan nyan nyan nyan nyan\"",
 			"imgSrc": "nyan.png",
 			"req": 12000,
 			"rarity": 3
 		},
 		{
-			"name": "Borger",
-			"description": "You've worked immensely hard. Here, have a cheeseburger!",
+			"name": "Cheeseborger",
+			"description": "This cat really likes cheeseburger. If you aren't lactose intolerant, you should also get a cheeseburger. You deserve a reward for coming so far!",
 			"imgSrc": "cheeseborger.jpg",
 			"req": 15000,
 			"rarity": 3
 		},
 		{
-			"name": "Car on Car",
-			"description": "Vroooooooooom...hop on, we heading to town!",
-			"imgSrc": "car.png",
+			"name": "Mrs. Kirby",
+			"description": "Mrs. Kirby is a fighter. No, don't be misguided by her cute face. A feisty, ferocious cat, she sees the feeder as her absolute territory, and kicks out other cats. For her, violence is often her first resort.",
+			"imgSrc": "kirby.png",
 			"req": 18000,
+			"rarity": 3
+		},
+		{
+			"name": "Mr. Oreo",
+			"description": "Mr. Oreo has a tendency of moving too suddenly at times, scaring the cats around him. This has caused Ms. Eeper, who he sleeps with, to be upset with him several times.",
+			"imgSrc": "oreo.png",
+			"req": 21000,
+			"rarity": 3
+		},
+		{
+			"name": "Car on Car",
+			"description": "A cat who is a professional at driving. He looks very nonchalant and comfortable, which impresses people.",
+			"imgSrc": "car.png",
+			"req": 24000,
 			"rarity": 4
 		},
 		{
 			"name": "Cat-caller",
 			"description": "Good morning sir, how can I help you? Ah yes, do try turning it off and on. Hopefully that works.",
 			"imgSrc": "callcentre.png",
-			"req": 21000,
+			"req": 27000,
 			"rarity": 3
 		},
 		{
 			"name": "Mrs. Eeper",
 			"description": "An eepy lady, often seen eeping in front of the feeders. Sometimes, she eeps in a loaf position. Please don't disturb her!",
 			"imgSrc": "mrseeper.png",
-			"req": 24000,
+			"req": 30000,
 			"rarity": 4
 		},
 		{
 			"name": "Mr. Croissant",
 			"description": "A cute cat that resembles a croissant. Lives at Happy Canteen.",
 			"imgSrc": "croissant.jpg",
-			"req": 27000,
+			"req": 33000,
 			"rarity": 4
 		},
 		{
-			"name": "Goobert",
+			"name": "Sir Goobert",
 			"description": "Goobert is a bit of a goober, he's very silly, but he's also brave as he took down Mt. Kibble once. Goobert is a very special boy. Treat him with kindness.",
 			"imgSrc": "goobert.jpg",
-			"req": 30000,
+			"req": 36000,
 			"rarity": 4
 		},
 		{
 			"name": "Mr. Fresh",
 			"description": "Mr. Fresh only wants fresh kibbles and snacks. He'll wait for as long as it takes, until he gets it.",
 			"imgSrc": "mrfresh.jpg",
-			"req": 33000,
+			"req": 39000,
+			"rarity": 5
+		},
+		{
+			"name": "The Gluttonous Beast",
+			"description": "This beast of a cat may appear small, but his ferocious appetite rivals even those who are bigger of him. ",
+			"imgSrc": "tgb.png",
+			"req": 42000,
 			"rarity": 5
 		},
 		{
 			"name": "Stinkwalker",
 			"description": "The stinkwalker is the manifestation of decay and despair. Even miles away, his presence can be acutely felt.",
 			"imgSrc": "stinkwalker.jpg",
-			"req": 36000,
+			"req": 45000,
 			"rarity": 5
 		},
 		{
 			"name": "War Cat",
 			"description": "War Cat has seen much...but he's still shocked by how far you have come. Good job!",
 			"imgSrc": "war.png",
-			"req": 39000,
+			"req": 48000,
 			"rarity": 5
 		}
 	]

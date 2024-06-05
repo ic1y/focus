@@ -4,67 +4,15 @@ const bodyParser = require("body-parser");
 const cookieParser = require("cookie-parser");
 const exphbs = require("express-handlebars");
 const bcrypt = require("bcrypt");
-const jwt = require("jsonwebtoken");
+// const jwt = require("jsonwebtoken");
 require("dotenv").config();
-const key = process.env.jwt_key;
+// const key = process.env.jwt_key;
 const uri = process.env.mongodb_URI;
-const achievements = require("./achievements.json").achievements;
-const { formatTime } = require("./utils");
+const { verify, setCookie } = require("./utils");
+const helpers = require("./helpers");
 
 const hps = exphbs.create({
-    helpers: {
-		getAchievements: function (focusData) {
-            let totalMin = 0;
-
-            if(focusData) focusData.forEach((timeString) => {
-                const [startTime, endTime] = timeString.split("|").map(Number);
-                const minutes = Math.floor((endTime - startTime) / 60000);
-                totalMin += minutes;
-			});
-						
-			let acvmHtml = "";	
-            achievements.forEach((acvm) => {
-                const achieved = (totalMin >= acvm.req);
-                acvmHtml += `<div data-name="${acvm.name}" data-desc="${acvm.description}" data-req="${acvm.req}" data-achv="${
-					achieved ? 1 : 0
-				}" data-src="${acvm.imgSrc}"><img alt="${acvm.name}" src="${
-					achieved
-						? "/static/acvm/" + acvm.imgSrc
-						: "/static/acvm/mystery.png"
-				}"><span class="acvmTitle">${acvm.name} ${
-					achieved ? "✅" : "🔒"
-				}</span><span class="acvmDesc">${
-					achieved
-						? acvm.description
-						: "Reach a total focus time of " +
-						  formatTime(acvm.req * 60000)
-				}</span><br></div>`;
-			});
-			return acvmHtml;				
-        },
-        showTime: function (timeData) {
-            let [startTime, endTime] = timeData.split("|");
-			const milliseconds = endTime - startTime;
-            
-            let date = new Date(Number(startTime));
-            return `On ${date.toLocaleString()}, you focused for ${formatTime(milliseconds)}.`;
-        },
-        getTotalTime: function (focusData) {
-            let totalSeconds = 0;
-
-            if (focusData)
-                focusData.forEach((timeString) => {
-                    const [startTime, endTime] = timeString
-                        .split("|")
-                        .map(Number);
-                    const seconds = Math.floor(
-                        (endTime - startTime) / 1000
-                    );
-                    totalSeconds += seconds;
-                });
-            return totalSeconds;
-        }
-    },
+    helpers: helpers,
 });
 // Create a MongoClient with a MongoClientOptions object to set the Stable API version
 const client = new MongoClient(uri, {
@@ -74,35 +22,6 @@ const client = new MongoClient(uri, {
         deprecationErrors: true,
     },
 });
-
-const verify = async (req, res, Clx, deferLogin) => {
-    const token = req.cookies.authToken;
-
-    if (!token) {
-        if (deferLogin === true) {
-            res.sendFile(__dirname + "/intro.html");
-        } else {
-            res.sendStatus(400);
-        }
-        return false;
-    }
-
-    let id = null;
-    try {
-        result = jwt.verify(token, key);
-        id = result.id;
-    } catch (err) {
-        res.sendStatus(403);
-        return false;
-    }
-    id = ObjectId.createFromHexString(id);
-    const uInfo = await Clx.findOne({ _id: id});
-    if (uInfo === null) {
-        res.sendStatus(404);
-        return false;
-    }
-    return uInfo;
-}
 
 async function run() {
     try {
@@ -167,19 +86,6 @@ async function run() {
             })
         })
 
-        function setCookie(id, res) {
-            const token = jwt.sign({ id: id.toString() }, key);
-
-            // Set the JWT as an HTTP-only cookie
-            res.cookie("authToken", token, {
-				httpOnly: true, // Accessible only by the server
-				secure: true, // Only send over HTTPS
-				maxAge: 7776000000, // = 90 * 24 * 60 * 60 * 1000, 90 day expiration
-				sameSite: "strict", // Strict same-site policy
-			});
-            res.redirect("/");
-        }
-
         app.get("/log-out", async (req, res) => {
             res.clearCookie("authToken");
             res.sendFile(__dirname + "/log-out.html");
@@ -208,7 +114,7 @@ async function run() {
             if (!startTime || !endTime) return res.sendStatus(400);
 
             try {
-                uAuthClx.updateOne(
+                await uAuthClx.updateOne(
                     { username: uInfo.username }, // Filter to get doc
                     // Update document
                     {
@@ -218,10 +124,10 @@ async function run() {
                     },
                     { upsert: true }
                 );
+                res.sendStatus(200);
             } catch {
                 res.sendStatus(500);
             }
-            res.sendStatus(200);
         });
 
         app.get("/getToDos", async (req, res) => {
@@ -301,13 +207,12 @@ async function run() {
                         res.sendStatus(400);
                         
                 }
-    			res.sendStatus(200);
+    			if (res.headersSent === false) res.sendStatus(200);
                    
             } catch {
-                res.sendStatus(500);
+                if(res.headersSent === false) res.sendStatus(500);
             }
 		});
-
 
         app.post("/login", async (req, res) => {
             let username = req.body.username;
@@ -342,8 +247,8 @@ async function run() {
             username = username.toLowerCase();
 
             const uInfo = await uAuthClx.findOne({ username: username });
-            if (uInfo) {
-                res.send("Username already exists");
+            if (uInfo !== null) {
+                res.send("Username already exists, try another one");
                 return;
             }
 
@@ -357,7 +262,6 @@ async function run() {
         });
 
         app.listen(3000);
-        console.log("http://localhost:3000")
     } catch (e) {
         console.error("Error: " + e);
     }
