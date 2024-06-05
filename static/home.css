@@ -157,7 +157,7 @@ summary > * {
 button {
 	padding: 0.25rem 0.5rem;
 }
-button > svg {
+button > img {
 	height: 100%;
 	width: 100%;
 }
