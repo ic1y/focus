@@ -38,6 +38,10 @@ body > h2 > a {
 	max-width: 20rem;
 	border: 0.125rem solid #000;
 }
+#install {
+	display: none;
+	font-weight: 700;
+}
 @media (prefers-color-scheme: dark) {
 	html {
 		color-scheme: dark;
