@@ -38,12 +38,12 @@ async function run() {
         app.use(bodyParser.json());
         app.use(cookieParser());
 
-        app.use("/static", express.static("static"));
+        app.use("/", express.static("static"));
 
         app.use(function (req, res, next) {
 			res.setHeader(
 				"Content-Security-Policy",
-				"default-src 'none'; img-src 'self'; script-src 'self'; style-src 'self' cdn.jsdelivr.net; connect-src 'self'; frame-src www.youtube-nocookie.com; frame-ancestors 'none'; form-action 'self'; base-uri 'none';"
+				"default-src 'none'; img-src 'self'; script-src 'self'; style-src 'self' cdn.jsdelivr.net; connect-src 'self'; frame-src www.youtube-nocookie.com; frame-ancestors 'none'; form-action 'self'; base-uri 'none'; manifest-src 'self'"
 			);
             res.setHeader(
 				"Strict-Transport-Security",
@@ -75,14 +75,14 @@ async function run() {
                     toDos: JSON.stringify(toDoData)
                 });
             } catch (err) {
-                res.sendFile(__dirname + "/login.html");
+                res.sendFile(__dirname + "/intro.html");
                 return;
             }
         });
 
         ["sign-up", "login", "deleted"].forEach(path => {
             app.get(`/${path}`, (req, res) => {
-                res.sendFile(`${__dirname}/${path}.html`)
+                res.sendFile(`${__dirname}/${path}.html`);
             })
         })
 

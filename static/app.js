@@ -158,16 +158,16 @@ const closeDlg = document.getElementById("closeDlg");
 
 const unlockAchv = (el, benchM) => {
 	closeDlg.style.display = "none";
-	dlgImg.src = "/static/acvm/mystery.png";
+	dlgImg.src = "/acvm/mystery.png";
 	dlgTitle.innerText = `You got '${el.dataset.name}'!\n`
 	dlgImg.addEventListener("click", () => {
-		dlgImg.src = "/static/acvm/" + el.dataset.src;
+		dlgImg.src = "/acvm/" + el.dataset.src;
 		closeDlg.style.display = "block";
 	}, {once: true});
 	closeDlg.addEventListener("click", () => {
 		document.body.classList.remove("dlgOpen");
 		const acvmImg = el.children[0];
-		acvmImg.src = "/static/acvm/" + el.dataset.src;
+		acvmImg.src = "/acvm/" + el.dataset.src;
 		acvmImg.classList.remove("bw");
 		dlg.close();
 		dlg.style.display = "none";

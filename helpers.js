@@ -21,8 +21,8 @@ const helpers = {
 				achieved ? 1 : 0
 			}" data-src="${acvm.imgSrc}"><img alt="${acvm.name}" src="${
 				achieved
-					? "/static/acvm/" + acvm.imgSrc
-					: "/static/acvm/mystery.png"
+					? "/acvm/" + acvm.imgSrc
+					: "/acvm/mystery.png"
 			}"><span class="acvmTitle">${acvm.name} ${
 				achieved ? "✅" : "🔒"
 			}</span><span class="acvmDesc">${
