@@ -41,20 +41,21 @@ const verify = async (req, res, Clx, deferLogin) => {
 		res.sendStatus(404);
 		return false;
 	}
+	setCookie(id.toString(), res, false); // renew cookie
 	return uInfo;
 };
 
-const setCookie = (id, res) => {
+const setCookie = (id, res, redirect) => {
 	const token = jwt.sign({ id: id.toString() }, key);
-
+	
 	// Set the JWT as an HTTP-only cookie
 	res.cookie("authToken", token, {
 		httpOnly: true, // Accessible only by the server
 		secure: true, // Only send over HTTPS
-		maxAge: 7776000000, // = 90 * 24 * 60 * 60 * 1000, 90 day expiration
+		maxAge: 2592000000, // = 30 * 24 * 60 * 60 * 1000, 30 day expiration
 		sameSite: "strict", // Strict same-site policy
 	});
-	res.redirect("/");
+	if (redirect !== false) res.redirect("/");
 }
 
 const utils = {

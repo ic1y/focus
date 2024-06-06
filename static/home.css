@@ -69,6 +69,10 @@ main > * {
 	margin: 0 1rem;
 }
 
+ul, li {
+	text-align: left;
+}
+
 #acvm {
 	display: flex;
 	justify-content: center;

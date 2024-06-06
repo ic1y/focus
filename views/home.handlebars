@@ -19,8 +19,8 @@
 	{{toDos}}
 </div>
 <details id="yt">
-	<summary>Play Music (toggle show/hide)</summary>
-	<iframe src="https://www.youtube-nocookie.com/embed/jfKfPfyJRdk?modestbranding=1&rel=0&fs=0" width="320" height="180" title="A YouTube video" frameborder="0"></iframe>
+	<summary id="openMusic">Play Music (toggle show/hide)</summary>
+	<iframe src="" data-src="https://www.youtube-nocookie.com/embed/jfKfPfyJRdk?modestbranding=1&rel=0&fs=0" width="320" height="180" title="A YouTube video" frameborder="0"></iframe>
 </details>
 {{!-- Rendered client-side to reduce server side load --}}
 <h2 id="total" data-total="{{getTotalTime focusData}}"></h2> 

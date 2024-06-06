@@ -285,7 +285,7 @@ document.getElementById("logOut").addEventListener("click", () => {
 
 document.getElementById("delete").addEventListener("click", async () => {
 	const cfm = prompt("Are you sure you want to delete your account? This action is irreversible! To confirm, enter 'delete':");
-	if (cfm === false) return; 
+	if (cfm === false) return;
 	if (cfm.trim().toLowerCase() === "delete") {
 		const rawResponse = await fetch("/deleteAccount", {
 			method: "POST",
@@ -296,7 +296,7 @@ document.getElementById("delete").addEventListener("click", async () => {
 			body: JSON.stringify({
 				delete: "delete"
 			})
-		});	
+		});
 		// server sends 200 to show successful account deletion (see index.js)
 		switch (rawResponse.status) {
 			case (200):
@@ -308,3 +308,9 @@ document.getElementById("delete").addEventListener("click", async () => {
 		}
 	};
 })
+
+// load iframe only when <summary> controlling iframe is clicked
+document.getElementById("openMusic").addEventListener("click", () => {
+	const player = document.querySelector("iframe");
+	player.src = player.dataset.src;
+}, { once: true });
