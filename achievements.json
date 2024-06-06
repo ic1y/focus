@@ -100,7 +100,7 @@
 		},
 		{
 			"name": "Mr. Oreo",
-			"description": "Mr. Oreo has a tendency of moving too suddenly at times, scaring the cats around him. This has caused Ms. Eeper, who he sleeps with, to be upset with him several times.",
+			"description": "Mr. Oreo has a tendency of moving too suddenly at times, scaring the cats around him. This has caused Ms. Eeper, who he occasionally sleeps with, to be upset with him several times.",
 			"imgSrc": "oreo.png",
 			"req": 21000,
 			"rarity": 3
@@ -128,7 +128,7 @@
 		},
 		{
 			"name": "Mr. Croissant",
-			"description": "A cute cat that resembles a croissant. Lives at Happy Canteen.",
+			"description": "A cute cat that resembles a croissant. Eats at Happy Canteen.",
 			"imgSrc": "croissant.jpg",
 			"req": 33000,
 			"rarity": 4

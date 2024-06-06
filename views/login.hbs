@@ -8,11 +8,12 @@
 <h1>Log into Focus</h1>
 <form action="/login" method="post">
 	<label for="username">Username:</label>
-	<input type="text" autocomplete="username" id="username" name="username">
+	<input type="text" autocomplete="username" id="username" name="username" pattern="[^\s]+" minlength="1" maxlength="64" required>
 	<label for="password">Password:</label>
-	<input type="password" id="password" name="password" autocomplete="current-password">
+	<input type="password" id="password" name="password" autocomplete="current-password" pattern="[^\s]+" minlength="8" maxlength="1024" required>
 	<input type="submit" value="Submit">
 </form>
+<span>Format: No spaces</span>
 <h2>No account?</h2>
 <a href="/sign-up">Sign Up</a>
 <h2>Contact webmaster</h2>

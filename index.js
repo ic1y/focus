@@ -56,8 +56,8 @@ async function run() {
 		});
 
 		// https://stackoverflow.com/a/26454491
-		// Somewhat counter-intuitively, setting the extension name is not enough. 
-        // The engine name has to be the same as the file extension.
+		// Somewhat counter-intuitively, setting the extension name is not enough.
+		// The engine name has to be the same as the file extension.
 
 		app.engine("hbs", hbs.engine);
 		app.set("view engine", "hbs");
@@ -110,8 +110,8 @@ async function run() {
 			try {
 				await uAuthClx.deleteOne({ _id: uInfo._id });
 				res.clearCookie("authToken");
-                res.sendStatus(200);
-            } catch {
+				res.sendStatus(200);
+			} catch {
 				res.sendStatus(500);
 			}
 		});
@@ -248,12 +248,18 @@ async function run() {
 
 		app.post("/sign-up", async (req, res) => {
 			let username = req.body.username;
-			const password = req.body.password;
+			let password = req.body.password;
 			if (!username || !password) {
-				res.send("Please provide a username AND password");
+				res.send("Please provide a username (between 1 and 64 characters inclusive) AND password (between 8 and 1024 characters inclusive)");
 				return;
 			}
 			username = username.toLowerCase();
+
+			if (username.length < 1 || username.length > 64 || password.length < 8 || password.length > 1024) {
+				res.send(
+					"Please provide a username (between 1 and 64 characters inclusive) AND password (between 8 and 1024 characters inclusive)"
+				);
+			}
 
 			const uInfo = await uAuthClx.findOne({ username: username });
 			if (uInfo !== null) {
@@ -267,6 +273,15 @@ async function run() {
 				password: hashed,
 			});
 			setCookie(insertionRes.insertedId, res);
+		});
+
+		// Since this is the last non-error-handling
+		// middleware use()d, we assume 404, as nothing else
+		// responded.
+		// https://stackoverflow.com/a/9802006
+
+		app.use(function (req, res, next) {
+			res.redirect("/")
 		});
 
 		app.listen(3000);

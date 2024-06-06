@@ -8,11 +8,12 @@
 <h1>Sign up</h1>
 <form action="/sign-up" method="post">
 	<label for="username">Username:</label>
-	<input type="text" autocomplete="username" id="username" name="username">
+	<input type="text" autocomplete="username" id="username" name="username" pattern="[^\s]+" minlength="1" maxlength="64" required>
 	<label for="password">Password:</label>
-	<input type="password" id="password" name="password" autocomplete="new-password">
+	<input type="password" id="password" name="password" autocomplete="new-password" pattern="[^\s]+" minlength="8" maxlength="1024" required>
 	<input type="submit" value="Submit">
 </form>
+<span>Format: No spaces</span>
 <h2>Got an account?</h2>
 <a href="/login">Login</a>
 <h2>Contact webmaster:</h2>
