@@ -345,9 +345,9 @@ document.getElementById("requestData").addEventListener("click", async () => {
 document.getElementById("changePass").addEventListener("click", async () => {
 	const newP = prompt("Change password\nNew password:");
 	if (newP === null) return;
-	if (newP.length < 8 || newP.length > 1024 || /[\s+]/.test(newP))
+	if (newP.length < 8 || newP.length > 55 || /[\s+]/.test(newP))
 		return alert(
-			"Password should contain between 8 and 1024 characters inclusive. No spaces allowed."
+			"Password should contain between 8 and 55 characters inclusive. No spaces allowed."
 		);
 	const rawResponse = await fetch("/changePass", {
 		method: "POST",
