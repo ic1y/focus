@@ -93,7 +93,7 @@ async function run() {
 		app.get("/requestData", async (req, res) => {
 			const uInfo = await verify(req, res, uAuthClx);
 			if (uInfo === false) return;
-			console.log(uInfo);
+			// console.log(uInfo);
 			try {
 				delete uInfo.password;
 				delete uInfo._id;
@@ -106,7 +106,7 @@ async function run() {
 		app.post("/deleteAccount", async (req, res) => {
 			const uInfo = await verify(req, res, uAuthClx);
 			if (uInfo === false) return;
-			console.log(uInfo);
+			// console.log(uInfo);
 			try {
 				await uAuthClx.deleteOne({ _id: uInfo._id });
 				res.clearCookie("authToken");
@@ -262,7 +262,6 @@ async function run() {
 			}
 
 			const hashed = bcrypt.hashSync(password, 10);
-			// console.log(password, hashed);
 			const insertionRes = await uAuthClx.insertOne({
 				username: username,
 				password: hashed,

@@ -15,7 +15,7 @@ if (focusLi.children.length === 0) {
 
 const showToDo = async (toDo, done) => {
 	const toDoDiv = document.createElement("div");
-	console.log(toDo)
+	// console.log(toDo)
 	const toDoLabel = document.createElement("label");
 	const toDoName = document.createElement("span");
 	toDoName.innerText = toDo;
@@ -281,19 +281,6 @@ document.getElementById("logOut").addEventListener("click", () => {
 	const cfm = confirm("Confirmation: log out?");
 	if (cfm === true) document.location.pathname = "/log-out";
 })
-
-const downloadObjectAsJson = (exportObj, exportName) => {
-	var dataStr =
-		"data:text/json;charset=utf-8," +
-		encodeURIComponent(JSON.stringify(exportObj));
-	var downloadAnchorNode = document.createElement("a");
-	downloadAnchorNode.setAttribute("href", dataStr);
-	downloadAnchorNode.setAttribute("download", exportName + ".json");
-	document.body.appendChild(downloadAnchorNode); // required for firefox
-	downloadAnchorNode.click();
-	downloadAnchorNode.remove();
-		console.log(1);
-}
 
 document.getElementById("requestData").addEventListener("click", async () => {
 	const cfm = confirm("Confirmation: Request a copy of your user data? This will open a new tab containing your user data information.");

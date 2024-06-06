@@ -32,7 +32,7 @@ const verify = async (req, res, Clx, deferLogin) => {
 		result = jwt.verify(token, key);
 		id = result.id;
 	} catch (err) {
-		console.log(err);
+		console.trace(err);
 		res.sendStatus(403);
 		return false;
 	}
