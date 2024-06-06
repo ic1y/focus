@@ -7,9 +7,9 @@
 <h1>Sign up</h1>
 <form action="/sign-up" method="post">
 	<label for="username">Username:</label>
-	<input type="text" autocomplete="username" id="username" name="username" pattern="[^\s]+" minlength="1" maxlength="64" required>
+	<input type="text" autocomplete="username" id="username" name="username" pattern="[^\s]+" minlength="1" maxlength="64" required spellcheck="false">
 	<label for="password">Password:</label>
-	<input type="password" id="password" name="password" autocomplete="new-password" pattern="[^\s]+" minlength="8" maxlength="1024" required>
+	<input type="password" id="password" name="password" autocomplete="new-password" pattern="[^\s]+" minlength="8" maxlength="1024" required spellcheck="false">
 	<input type="submit" value="Submit">
 </form>
 <span>Format: No spaces</span>
