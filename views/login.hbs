@@ -1,7 +1,6 @@
 {{#section 'head'}}
 	<link rel="stylesheet" href="/startpage.css">
 {{/section}}
-<button id="install">Install Focus app</button>
 <header>
 	<a href="/">Focus: Productivity gamified</a>
 </header>
@@ -10,7 +9,8 @@
 	<label for="username">Username:</label>
 	<input type="text" autocomplete="username" id="username" name="username" pattern="[^\s]+" minlength="1" maxlength="64" required>
 	<label for="password">Password:</label>
-	<input type="password" id="password" name="password" autocomplete="current-password" pattern="[^\s]+" minlength="8" maxlength="1024" required>
+	<input type="password" id="password" name="password" autocomplete="current-password" pattern="[^\s]+" minlength="1" maxlength="1024" required>
+	{{!-- decrease minlength from 8 to 1 for legacy accounts - only --}}
 	<input type="submit" value="Submit">
 </form>
 <span>Format: No spaces</span>

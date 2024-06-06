@@ -187,6 +187,7 @@ const unlockAchv = (el, benchM) => {
 		const acvmImg = el.children[0];
 		acvmImg.src = "/acvm/" + el.dataset.src;
 		acvmImg.classList.remove("bw");
+		main.removeAttribute("ariaDisabled");
 		dlg.close();
 		dlg.style.display = "none";
 		dlgDesc.innerText = "";
@@ -197,6 +198,7 @@ const unlockAchv = (el, benchM) => {
 	document.body.classList.add("dlgOpen");
 	dlg.style.display = "flex";
 	dlg.open = true;
+	main.ariaDisabled = true;
 
 	dlgImg.focus();
 }
@@ -328,6 +330,30 @@ document.getElementById("requestData").addEventListener("click", async () => {
 		});;
 })
 
+document.getElementById("changePass").addEventListener("click", async () => {
+	const newP = prompt(
+		"Change password\nNew password:"
+	);
+	if (newP === null) return;
+	if (newP.length < 8 || newP.length > 1024 || /[\s+]/.test(newP)) return alert("Password should contain between 8 and 1024 characters inclusive. No spaces allowed.");
+	const rawResponse = await fetch("/changePass", {
+		method: "POST",
+		headers: {
+			Accept: "application/json",
+			"Content-Type": "application/json",
+		},
+		body: JSON.stringify({ pass: newP })
+	});
+	switch (rawResponse.status) {
+		case (200):
+			alert("Password successfully changed.")
+			break;
+		case (500):
+			alert("Server error: password change unsuccessful");
+			break;
+	}
+});
+
 document.getElementById("delete").addEventListener("click", async () => {
 	const cfm = prompt("Are you sure you want to delete your account? This action is irreversible! To confirm, enter 'delete':");
 	if (cfm === false) return;
@@ -351,7 +377,7 @@ document.getElementById("delete").addEventListener("click", async () => {
 				document.location.reload();
 				break;
 			case (500):
-				alert("Error: deletion request unsuccessful");
+				alert("Server error: deletion request unsuccessful");
 				break;
 		}
 	};

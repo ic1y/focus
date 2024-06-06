@@ -25,7 +25,7 @@ const helpers = {
 				achieved ? "✅" : "🔒"
 			}</span><span class="acvmDesc">${
 				achieved
-					? acvm.description
+					? acvm.description.replaceAll("|", "\"")
 					: "Reach a total focus time of " +
 					  formatTime(acvm.req * 60000)
 			}</span><br></div>`;

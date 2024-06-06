@@ -1,4 +1,4 @@
-const { MongoClient, ServerApiVersion, ObjectId } = require("mongodb");
+const { MongoClient, ServerApiVersion } = require("mongodb");
 const express = require("express");
 const bodyParser = require("body-parser");
 const cookieParser = require("cookie-parser");
@@ -102,6 +102,27 @@ async function run() {
 				// 	"attachment; filename=user-data.json;"
 				// );
 				res.json(uInfo).send();
+			} catch {
+				res.sendStatus(500);
+			}
+		});
+
+		app.post("/changePass", async (req, res) => {
+			const uInfo = await verify(req, res, uAuthClx);
+			if (uInfo === false) return;
+			// console.log(uInfo);
+			const pwd = req.body.pass;
+			if (!pwd) res.sendStatus(400);
+			const hashed = bcrypt.hashSync(pwd, 10);
+			try {
+				await uAuthClx.updateOne({ _id: uInfo._id }, 
+					{
+						$set: {
+							password: hashed
+						}
+					}
+				);
+				res.sendStatus(200);
 			} catch {
 				res.sendStatus(500);
 			}
