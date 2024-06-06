@@ -142,14 +142,13 @@ summary > * {
 /* 2. Explicit height/width on svg, in pixels */
 #enterToDo,
 #toDoList button {
-	/* display: flex;
+	display: flex;
 	justify-content: center;
-	align-items: center; */
+	align-items: center;
 	text-align: left;
-	height: 32px;
-	width: 32px;
-	/* iOS safari fix */
-	-webkit-appearance: none;  
+	height: 2.25rem;
+	width: 2.25rem;
+	/* -webkit-appearance: none;   */
 	border: 0.125rem solid #f7cac9;
 	border-radius: 50%;
 }
@@ -157,8 +156,8 @@ summary > * {
 	margin-left: 0.5rem;
 }
 button > svg {
-	height: 24px;
-	width: 24px;
+	height: 1.5rem;
+	width: 1.5rem;
 }
 /* div containing buttons */
 #toDoList > div > div { 
