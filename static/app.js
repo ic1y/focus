@@ -304,21 +304,28 @@ document.getElementById("logOut").addEventListener("click", () => {
 })
 
 document.getElementById("requestData").addEventListener("click", async () => {
-	const cfm = confirm("Confirmation: Request a copy of your user data? This will open a new tab containing your user data information.");
+	const cfm = confirm("Confirmation: request a copy of your user data? This will open a .json file in a new tab for your download.");
 	if (cfm === false) return;
-	const rawResponse = await fetch("/requestData", {
+	fetch("/requestData", {
 		method: "GET",
 		headers: {
 			Accept: "application/json",
 			"Content-Type": "application/json",
 		},
-		});
-	const win = window.open("", "");
-	data = JSON.stringify(await rawResponse.json());
-	win.document.title = "Your User Data"
-	win.document.body.style =
-		"background-color: white; color: black; font-family: monospace;";
-	win.document.body.innerText = await data;
+	}).then((res) => res.blob())
+		.then((blob) => {
+			const file = window.URL.createObjectURL(blob);
+			const newWin = window.open(file);
+
+			if (
+				!newWin ||
+				newWin.closed ||
+				typeof newWin.closed == "undefined"
+			) {
+				//POPUP BLOCKED
+				document.location.assign(file);
+			};
+		});;
 })
 
 document.getElementById("delete").addEventListener("click", async () => {
