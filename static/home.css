@@ -137,11 +137,14 @@ summary > * {
 	display: flex;
 	flex-direction: row;
 }
+/* Requirements for svg in button to be rendered correctly in iOS Safari: */
+/* 1. Button must be block */
+/* 2. Explicit height/width on svg, in pixels */
 #enterToDo,
 #toDoList button {
-	display: flex;
+	/* display: flex;
 	justify-content: center;
-	align-items: center;
+	align-items: center; */
 	height: 32px;
 	width: 32px;
 	/* iOS safari fix */
