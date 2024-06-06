@@ -19,7 +19,7 @@ const verify = async (req, res, Clx, deferLogin) => {
 
 	if (!token) {
 		if (deferLogin === true) {
-			res.sendFile(__dirname + "/intro.html");
+			res.render("intro");
 		} else {
 			res.sendStatus(400);
 		}

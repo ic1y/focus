@@ -20,9 +20,7 @@ const helpers = {
 			}" data-req="${acvm.req}" data-achv="${
 				achieved ? 1 : 0
 			}" data-src="${acvm.imgSrc}"><img alt="${acvm.name}" src="${
-				achieved
-					? "/acvm/" + acvm.imgSrc
-					: "/acvm/mystery.png"
+				achieved ? "/acvm/" + acvm.imgSrc : "/acvm/mystery.png"
 			}"><span class="acvmTitle">${acvm.name} ${
 				achieved ? "✅" : "🔒"
 			}</span><span class="acvmDesc">${
@@ -53,6 +51,13 @@ const helpers = {
 				totalSeconds += seconds;
 			});
 		return totalSeconds;
+	},
+	// 	Handlebars with Express: different html head for different pages https://stackoverflow.com/a/21740214
+	// For different stylesheets on different pages
+	section: function (name, options) {
+		if (!this._sections) this._sections = {};
+		this._sections[name] = options.fn(this);
+		return null;
 	},
 };
 

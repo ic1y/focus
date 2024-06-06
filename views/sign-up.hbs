@@ -1,0 +1,21 @@
+{{#section 'head'}}
+	<link rel="stylesheet" href="/startpage.css">
+{{/section}}
+<button id="install">Install Focus app</button>
+<header>
+	<a href="/">Focus: Productivity gamified</a>
+</header>
+<h1>Sign up</h1>
+<form action="/sign-up" method="post">
+	<label for="username">Username:</label>
+	<input type="text" autocomplete="username" id="username" name="username">
+	<label for="password">Password:</label>
+	<input type="password" id="password" name="password" autocomplete="new-password">
+	<input type="submit" value="Submit">
+</form>
+<h2>Got an account?</h2>
+<a href="/login">Login</a>
+<h2>Contact webmaster:</h2>
+<a href="mailto:ggohnchs@gmail.com">Email: ggohnchs@gmail.com</a>
+<span>Focus is made by Gilbert</span>
+<script src="/install.js"></script>
