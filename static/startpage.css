@@ -8,21 +8,22 @@ html {
 body {
 	padding: 1rem;
 	font-size: 1.25rem;
+	max-width: 42rem;
 }
-body, form {
+html, body, form {
 	display: flex;
 	flex-direction: column;
 	justify-content: center;
 	align-items: center;
-}
-input {
-	font-size: inherit;
 }
 body > *, form > * {
 	margin: 0.5rem 0;
 }
 input[type="submit"] {
 	padding: 0.25rem 1rem;
+}
+ul, ol {
+	width: 100%;
 }
 #install {
 	display: none;

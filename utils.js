@@ -21,6 +21,7 @@ const verify = async (req, res, Clx, deferLogin) => {
 		if (deferLogin === true) {
 			res.render("intro");
 		} else {
+			// Request is malformed i.e. does not contain token
 			res.sendStatus(400);
 		}
 		return false;
@@ -37,6 +38,7 @@ const verify = async (req, res, Clx, deferLogin) => {
 	}
 	id = ObjectId.createFromHexString(id);
 	const uInfo = await Clx.findOne({ _id: id });
+	// User not found
 	if (uInfo === null) {
 		res.sendStatus(404);
 		return false;

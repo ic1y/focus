@@ -8,8 +8,12 @@ html {
 body {
 	padding: 1rem;
 	font-size: 1rem;
+	max-width: 43rem;
 }
-body, form {
+ul, ol {
+	width: 100%;
+}
+html, body, form {
 	display: flex;
 	flex-direction: column;
 	justify-content: center;

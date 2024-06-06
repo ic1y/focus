@@ -35,7 +35,7 @@ const showToDo = async (toDo, done) => {
 				done: toDoCheck.checked,
 			}),
 		});
-		if (rawResponse.status !== 200) alert("Failed to change to-do");
+		if (rawResponse.status !== 200) alert("Error: failed to change to-do");
 	});
 
 	const btnsDiv = document.createElement("div");
@@ -89,7 +89,7 @@ const showToDo = async (toDo, done) => {
 		if (rawResponse.status === 200) {
 			toDoLi.removeChild(toDoDiv);
 		} else {
-			alert("Failed to remove to-do");
+			alert("Error: failed to remove to-do");
 		}
 	});
 }
@@ -186,7 +186,6 @@ const checkAcvm = (benchM) => {;
 	if (!firstEl) return;
 
 	if (benchM >= Number(firstEl.dataset.req)) {
-		// alert("achv reached!");
 		console.log(true);
 
 		firstEl.dataset.achv = "1";
@@ -283,6 +282,37 @@ document.getElementById("logOut").addEventListener("click", () => {
 	if (cfm === true) document.location.pathname = "/log-out";
 })
 
+const downloadObjectAsJson = (exportObj, exportName) => {
+	var dataStr =
+		"data:text/json;charset=utf-8," +
+		encodeURIComponent(JSON.stringify(exportObj));
+	var downloadAnchorNode = document.createElement("a");
+	downloadAnchorNode.setAttribute("href", dataStr);
+	downloadAnchorNode.setAttribute("download", exportName + ".json");
+	document.body.appendChild(downloadAnchorNode); // required for firefox
+	downloadAnchorNode.click();
+	downloadAnchorNode.remove();
+		console.log(1);
+}
+
+document.getElementById("requestData").addEventListener("click", async () => {
+	const cfm = confirm("Confirmation: Request a copy of your user data? This will open a new tab containing your user data information.");
+	if (cfm === false) return;
+	const rawResponse = await fetch("/requestData", {
+		method: "GET",
+		headers: {
+			Accept: "application/json",
+			"Content-Type": "application/json",
+		},
+		});
+	const win = window.open("", "");
+	data = JSON.stringify(await rawResponse.json());
+	win.document.title = "Your User Data"
+	win.document.body.style =
+		"background-color: white; color: black; font-family: monospace;";
+	win.document.body.innerText = await data;
+})
+
 document.getElementById("delete").addEventListener("click", async () => {
 	const cfm = prompt("Are you sure you want to delete your account? This action is irreversible! To confirm, enter 'delete':");
 	if (cfm === false) return;
@@ -300,10 +330,13 @@ document.getElementById("delete").addEventListener("click", async () => {
 		// server sends 200 to show successful account deletion (see index.js)
 		switch (rawResponse.status) {
 			case (200):
-				location.pathname = "/deleted";
+				alert(
+					"Your account has been successfully deleted.\nYour user data has also been deleted from our database.\nYour cookies have been deleted.\nAny further queries can be addressed to the webmaster at ggohnchs@gmail.com."
+				);
+				document.location.reload();
 				break;
 			case (500):
-				alert("Deletion request unsuccessful");
+				alert("Error: deletion request unsuccessful");
 				break;
 		}
 	};

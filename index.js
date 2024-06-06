@@ -79,7 +79,7 @@ async function run() {
 			}
 		});
 
-		["sign-up", "login", "deleted"].forEach((path) => {
+		["sign-up", "login", "privacy"].forEach((path) => {
 			app.get(`/${path}`, (req, res) => {
 				res.render(path);
 			});
@@ -90,15 +90,28 @@ async function run() {
 			res.render("log-out");
 		});
 
+		app.get("/requestData", async (req, res) => {
+			const uInfo = await verify(req, res, uAuthClx);
+			if (uInfo === false) return;
+			console.log(uInfo);
+			try {
+				delete uInfo.password;
+				delete uInfo._id;
+				res.send(uInfo);
+			} catch {
+				res.sendStatus(500);
+			}
+		});
+
 		app.post("/deleteAccount", async (req, res) => {
 			const uInfo = await verify(req, res, uAuthClx);
 			if (uInfo === false) return;
 			console.log(uInfo);
 			try {
-				uAuthClx.deleteOne({ _id: uInfo._id });
+				await uAuthClx.deleteOne({ _id: uInfo._id });
 				res.clearCookie("authToken");
-				res.sendStatus(200);
-			} catch {
+                res.sendStatus(200);
+            } catch {
 				res.sendStatus(500);
 			}
 		});
