@@ -12,21 +12,21 @@ const { verify, setCookie } = require("./utils");
 const helpers = require("./helpers");
 
 const hbs = exphbs.create({
-    helpers: helpers,
-    extname: ".hbs",
-    defaultLayout: "main"
+	helpers: helpers,
+	extname: ".hbs",
+	defaultLayout: "main",
 });
 // Create a MongoClient with a MongoClientOptions object to set the Stable API version
 const client = new MongoClient(uri, {
-    serverApi: {
-        version: ServerApiVersion.v1,
-        strict: true,
-        deprecationErrors: true,
-    },
+	serverApi: {
+		version: ServerApiVersion.v1,
+		strict: true,
+		deprecationErrors: true,
+	},
 });
 
 async function run() {
-    try {
+	try {
 		// Connect the client to the server	(optional starting in v4.7)
 		await client.connect();
 		console.log("connected");
@@ -96,7 +96,7 @@ async function run() {
 			// console.log(uInfo);
 			try {
 				// delete uInfo.password; No compelling reason to keep this hidden when user is already verified
-				// delete uInfo._id; 
+				// delete uInfo._id;
 				// res.setHeader(
 				// 	"Content-Disposition",
 				// 	"attachment; filename=user-data.json;"
@@ -115,11 +115,12 @@ async function run() {
 			if (!pwd) res.sendStatus(400);
 			const hashed = bcrypt.hashSync(pwd, 10);
 			try {
-				await uAuthClx.updateOne({ _id: uInfo._id }, 
+				await uAuthClx.updateOne(
+					{ _id: uInfo._id },
 					{
 						$set: {
-							password: hashed
-						}
+							password: hashed,
+						},
 					}
 				);
 				res.sendStatus(200);
@@ -275,12 +276,19 @@ async function run() {
 			let username = req.body.username;
 			let password = req.body.password;
 			if (!username || !password) {
-				res.send("Please provide a username (between 1 and 64 characters inclusive) AND password (between 8 and 1024 characters inclusive)");
+				res.send(
+					"Please provide a username (between 1 and 64 characters inclusive) AND password (between 8 and 1024 characters inclusive)"
+				);
 				return;
 			}
 			username = username.toLowerCase();
 
-			if (username.length < 1 || username.length > 64 || password.length < 8 || password.length > 1024) {
+			if (
+				username.length < 1 ||
+				username.length > 64 ||
+				password.length < 8 ||
+				password.length > 1024
+			) {
 				res.send(
 					"Please provide a username (between 1 and 64 characters inclusive) AND password (between 8 and 1024 characters inclusive)"
 				);
@@ -306,13 +314,13 @@ async function run() {
 		// https://stackoverflow.com/a/9802006
 
 		app.use(function (req, res, next) {
-			res.redirect("/")
+			res.redirect("/");
 		});
 
 		app.listen(3000);
 	} catch (e) {
-        console.trace(e);
-    }
+		console.trace(e);
+	}
 }
 
 run();

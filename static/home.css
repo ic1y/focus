@@ -140,8 +140,8 @@ summary > * {
 /* Requirements for svg in button to be rendered correctly in iOS Safari: */
 /* 1. Button must be block */
 /* 2. Explicit height/width on svg, in pixels */
-#enterToDo,
-#toDoList button {
+body.notiOS #enterToDo,
+body.notiOS #toDoList button {
 	display: flex;
 	justify-content: center;
 	align-items: center;
@@ -155,7 +155,7 @@ summary > * {
 #enterToDo {
 	margin-left: 0.5rem;
 }
-button > svg {
+body.notiOS button > svg {
 	height: 1.5rem;
 	width: 1.5rem;
 }
