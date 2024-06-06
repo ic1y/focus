@@ -145,6 +145,7 @@ summary > * {
 	/* display: flex;
 	justify-content: center;
 	align-items: center; */
+	text-align: left;
 	height: 32px;
 	width: 32px;
 	/* iOS safari fix */
