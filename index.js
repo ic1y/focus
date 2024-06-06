@@ -95,7 +95,7 @@ async function run() {
 			if (uInfo === false) return;
 			// console.log(uInfo);
 			try {
-				// delete uInfo.password; No compelling reason to keep this hidden when user is already verified
+				delete uInfo.password;
 				// delete uInfo._id;
 				// res.setHeader(
 				// 	"Content-Disposition",
