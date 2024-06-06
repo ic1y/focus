@@ -139,9 +139,9 @@ summary > * {
 }
 #enterToDo,
 #toDoList button {
-	/* display: flex;
+	display: flex;
 	justify-content: center;
-	align-items: center; */
+	align-items: center;
 	height: 32px;
 	width: 32px;
 	/* iOS safari fix */
@@ -153,8 +153,8 @@ summary > * {
 	margin-left: 0.5rem;
 }
 button > svg {
-	height: 32px;
-	width: 32px;
+	height: 24px;
+	width: 24px;
 }
 /* div containing buttons */
 #toDoList > div > div { 
