@@ -37,16 +37,19 @@ body > h2 > a {
 	flex-direction: row;
 	column-gap: 1rem;
 }
-#screenshots > a > img {
+#screenshots > img {
 	width: calc(50vw - 2rem);
 	max-width: 20rem;
 	border: 0.125rem solid #000;
+}
+li {
+	margin: 0.25rem 0;
 }
 @media (prefers-color-scheme: dark) {
 	html {
 		color-scheme: dark;
 	}
-	#screenshots > a > img, body > h2 > a {
+	#screenshots > img, body > h2 > a {
 		border: 0.125rem solid #fff;
 	}
 }

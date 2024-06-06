@@ -254,7 +254,7 @@ async function run() {
 			let username = req.body.username;
 			const password = req.body.password;
 			if (!username || !password) {
-				res.send("Please provide a username AND password");
+				res.render("error", {err: "Username AND/OR Password is missing. Both Username AND Password are required."});
 				return;
 			}
 			username = username.toLowerCase();
@@ -265,10 +265,14 @@ async function run() {
 					// res.sendStatus(200);
 					setCookie(uInfo._id, res);
 				} else {
-					res.send("Wrong Username/Password");
+					res.render("error", {
+						err: "Wrong Username OR Password"
+					});
 				}
 			} else {
-				res.send("Wrong Username/Password");
+				res.render("error", {
+					err: "Wrong Username OR Password",
+				});
 			}
 		});
 
@@ -276,9 +280,9 @@ async function run() {
 			let username = req.body.username;
 			let password = req.body.password;
 			if (!username || !password) {
-				res.send(
-					"Please provide a username (between 1 and 64 characters inclusive) AND password (between 8 and 1024 characters inclusive)"
-				);
+				res.render("error", {
+					err: "Please provide a username (between 1 and 64 characters inclusive) AND password (between 8 and 1024 characters inclusive)"
+				});
 				return;
 			}
 			username = username.toLowerCase();
@@ -289,14 +293,16 @@ async function run() {
 				password.length < 8 ||
 				password.length > 1024
 			) {
-				res.send(
-					"Please provide a username (between 1 and 64 characters inclusive) AND password (between 8 and 1024 characters inclusive)"
-				);
+				res.render("error", {
+					err: "Please provide a username (between 1 and 64 characters inclusive) AND password (between 8 and 1024 characters inclusive). No spaces are allowed.",
+				});
 			}
 
 			const uInfo = await uAuthClx.findOne({ username: username });
 			if (uInfo !== null) {
-				res.send("Username already exists, try another one");
+				res.render("error", {
+					err: "Username already exists! We're sorry, please try another one."
+				})
 				return;
 			}
 

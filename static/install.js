@@ -8,7 +8,7 @@ installButton.style.fontSize = "1.5rem";
 installButton.innerText = "Install the Focus app";
 installButton.style.display = "none";
 
-const main = document.querySelector("main")
+const main = document.querySelector("main") || document.querySelector("body");
 main.insertBefore(installButton, main.firstChild);
 
 installButton.addEventListener("click", async () => {

@@ -19,7 +19,7 @@ html, body, form {
 body > *, form > * {
 	margin: 0.5rem 0;
 }
-input[type="submit"] {
+input[type="submit"], button {
 	padding: 0.25rem 1rem;
 }
 ul, ol {
