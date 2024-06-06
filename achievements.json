@@ -9,14 +9,14 @@
 		},
 		{
 			"name": "Milly",
-			"description": "Milly likes to stick his tongue out. \"Bleh! Too focused! Don't you have any time for silly Milly?\"",
+			"description": "Milly likes to stick his tongue out. |Bleh! Too focused! Don't you have any time for silly Milly?|",
 			"imgSrc": "milly.jpg",
 			"req": 10,
 			"rarity": 1
 		},
 		{
 			"name": "Doge",
-			"description": "\"Wow! Such focus! Much zen! So proud. Much wow!\" Kabosu-chan seems to be very impressed by you and your ability to focus.",
+			"description": "|Wow! Such focus! Much zen! So proud. Much wow!| Kabosu-chan seems to be very impressed by you and your ability to focus.",
 			"imgSrc": "doge.jpg",
 			"req": 25,
 			"rarity": 1
@@ -79,7 +79,7 @@
 		},
 		{
 			"name": "Nyan Cat",
-			"description": "\"Nyan nyan nyan nyan nyan nyan nyan nyan nyan nyan nyan nyan nyan nyan nyan nyan nyan nyan\"",
+			"description": "|Nyan nyan nyan nyan nyan nyan nyan nyan nyan nyan nyan nyan nyan nyan nyan nyan nyan nyan|",
 			"imgSrc": "nyan.png",
 			"req": 12000,
 			"rarity": 3

@@ -153,17 +153,35 @@ if(totalTime > 0) totalEl.innerText = "Total focus time: " + formatTime(totalTim
 
 const dlg = document.querySelector("dialog");
 const dlgTitle = document.getElementById("dlgTitle");
+const dlgDesc = document.getElementById("dlgDesc");
 const dlgImg = document.getElementById("dlgImg");
 const closeDlg = document.getElementById("closeDlg");
 
 const unlockAchv = (el, benchM) => {
+	// check for dialog element support
+	if (typeof HTMLDialogElement === "undefined") {
+		alert(`Congratulations! You unlocked ${el.dataset.name}!`);
+		return checkAcvm(benchM);
+	}
 	closeDlg.style.display = "none";
+	
 	dlgImg.src = "/acvm/mystery.png";
-	dlgTitle.innerText = `You got '${el.dataset.name}'!\n`
-	dlgImg.addEventListener("click", () => {
+	dlgImg.alt = "Click to unlock mystery character!";
+
+	dlgTitle.innerText = `You got '${el.dataset.name}'!\n`;
+	const revealImg = () => {
+		dlgImg.alt = el.dataset.name;
 		dlgImg.src = "/acvm/" + el.dataset.src;
+		dlgDesc.innerText = el.dataset.desc.replaceAll("|", "\"");
 		closeDlg.style.display = "block";
-	}, {once: true});
+	}
+	dlgImg.addEventListener("keydown", (event) => {
+		if (event.key === "Enter" || event.key === " ") {
+			revealImg();
+		}
+	}, { once: true });
+	dlgImg.addEventListener("click", revealImg);
+
 	closeDlg.addEventListener("click", () => {
 		document.body.classList.remove("dlgOpen");
 		const acvmImg = el.children[0];
@@ -171,6 +189,7 @@ const unlockAchv = (el, benchM) => {
 		acvmImg.classList.remove("bw");
 		dlg.close();
 		dlg.style.display = "none";
+		dlgDesc.innerText = "";
 		el.children[1].innerText = el.dataset.name + " ✅";
 		el.children[2].innerText = el.dataset.desc;
 		checkAcvm(benchM);
@@ -178,6 +197,8 @@ const unlockAchv = (el, benchM) => {
 	document.body.classList.add("dlgOpen");
 	dlg.style.display = "flex";
 	dlg.open = true;
+
+	dlgImg.focus();
 }
 
 const checkAcvm = (benchM) => {;
