@@ -310,8 +310,10 @@ const startFocus = () => {
 startBtn.addEventListener("click", startFocus);
 
 document.getElementById("logOut").addEventListener("click", () => {
-	const cfm = confirm("Confirmation: log out?");
-	if (cfm === true) document.location.pathname = "/log-out";
+	if ((focusState === true && confirm("You have an ongoing focus! Are you sure you want to log out? This will terminate the focus, leaving no records.") === true)
+		|| focusState === false && confirm("Log out?") === true) {
+		document.location.pathname = "/log-out";
+	}
 });
 
 document.getElementById("requestData").addEventListener("click", async () => {
@@ -345,9 +347,9 @@ document.getElementById("requestData").addEventListener("click", async () => {
 document.getElementById("changePass").addEventListener("click", async () => {
 	const newP = prompt("Change password\nNew password:");
 	if (newP === null) return;
-	if (newP.length < 8 || newP.length > 55 || /[\s+]/.test(newP))
+	if (newP.length < 8 || newP.length > 72 || /[\s+]/.test(newP))
 		return alert(
-			"Password should contain between 8 and 55 characters inclusive. No spaces allowed."
+			"Password should contain between 8 and 72 characters inclusive. No spaces allowed."
 		);
 	const rawResponse = await fetch("/changePass", {
 		method: "POST",

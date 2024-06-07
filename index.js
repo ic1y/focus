@@ -281,7 +281,7 @@ async function run() {
 			let password = req.body.password;
 			if (!username || !password) {
 				res.render("error", {
-					err: "Please provide a username (between 1 and 64 characters inclusive) AND password (between 8 and 55 characters inclusive)"
+					err: "Please provide a username (between 1 and 64 characters inclusive) AND password (between 8 and 72 characters inclusive)"
 				});
 				return;
 			}
@@ -291,10 +291,10 @@ async function run() {
 				username.length < 1 ||
 				username.length > 64 ||
 				password.length < 8 ||
-				password.length > 55
+				password.length > 72
 			) {
 				res.render("error", {
-					err: "Please provide a username (between 1 and 64 characters inclusive) AND password (between 8 and 55 characters inclusive). No spaces are allowed.",
+					err: "Please provide a username (between 1 and 64 characters inclusive) AND password (between 8 and 72 characters inclusive). No spaces are allowed.",
 				});
 			}
 

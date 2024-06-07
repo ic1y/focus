@@ -9,12 +9,12 @@
 	<label for="username">Username:</label>
 	<input type="text" autocomplete="username" id="username" name="username" pattern="[^\s]+" minlength="1" maxlength="64" required spellcheck="false">
 	<label for="password">Password:</label>
-	<input type="password" id="password" name="password" autocomplete="current-password" pattern="[^\s]+" minlength="1" maxlength="55" required spellcheck="false">
+	<input type="password" id="password" name="password" autocomplete="current-password" pattern="[^\s]+" minlength="1" maxlength="72" required spellcheck="false">
 	{{!-- decrease minlength from 8 to 1 for legacy accounts - only --}}
 	<input type="submit" value="Submit">
 </form>
 <span>
-	Please provide a username (between 1 and 64 characters inclusive) AND password (between 8 and 55 characters inclusive). No spaces are allowed.
+	Please provide a username (between 1 and 64 characters inclusive) AND password (between 8 and 72 characters inclusive). No spaces are allowed.
 </span>
 <h2>No account?</h2>
 <a href="/sign-up">Sign Up</a>
