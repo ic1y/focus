@@ -310,15 +310,15 @@ const startFocus = () => {
 startBtn.addEventListener("click", startFocus);
 
 document.getElementById("logOut").addEventListener("click", () => {
-	if ((focusState === true && confirm("You have an ongoing focus! Are you sure you want to log out? This will terminate the focus, leaving no records.") === true)
-		|| focusState === false && confirm("Log out?") === true) {
+	if ((focusState === true && confirm("Warning: You have an ongoing focus! Are you sure you want to log out? Your current focus will not be recorded.") === true)
+		|| focusState === false && confirm("Confirmation: Log out?") === true) {
 		document.location.pathname = "/log-out";
 	}
 });
 
 document.getElementById("requestData").addEventListener("click", async () => {
 	const cfm = confirm(
-		"Confirmation: request a copy of your user data? This will open a .json file in a new tab for your download."
+		"Confirmation: Request a copy of your user data? This will open a .json file in a new tab for your download."
 	);
 	if (cfm === false) return;
 	fetch("/requestData", {
@@ -345,7 +345,7 @@ document.getElementById("requestData").addEventListener("click", async () => {
 });
 
 document.getElementById("changePass").addEventListener("click", async () => {
-	const newP = prompt("Change password\nNew password:");
+	const newP = prompt("Change password\nEnter your new password:");
 	if (newP === null) return;
 	if (newP.length < 8 || newP.length > 72 || /[\s+]/.test(newP))
 		return alert(
@@ -371,7 +371,7 @@ document.getElementById("changePass").addEventListener("click", async () => {
 
 document.getElementById("delete").addEventListener("click", async () => {
 	const cfm = prompt(
-		"Are you sure you want to delete your account? This action is irreversible! To confirm, enter 'delete':"
+		"Warning: Are you sure you want to delete your account? This action is irreversible! To confirm, enter 'delete' (without quotation marks):"
 	);
 	if (cfm === false) return;
 	if (cfm.trim().toLowerCase() === "delete") {

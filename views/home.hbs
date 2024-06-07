@@ -7,7 +7,7 @@
 	<span id="time">00 : 00 : 00</span>
 	<button id="start">Start a focus</button>
 	<button id="end">End the focus</button>
-	<h2>To do:</h2>
+	<h2>My to-do list:</h2>
 	<label for="addToDo">Add to-do:</label> 
 	<div id="inputRow">
 		<input type="text" id="addToDo">
@@ -29,7 +29,7 @@
 	<h2 id="total" data-total="{{getTotalTime focusData}}"></h2> 
 	<details id="histTitle">
 		<summary>
-			<h3>Your focus history:</h3>
+			<h3>My focus history:</h3>
 		</summary>
 		<ul id="focusList">
 		{{#each focusData}}
@@ -39,7 +39,7 @@
 		{{/each}}
 	</ul>
 	</details>
-	<h2>Achievements:</h2>
+	<h2>My Achievements:</h2>
 	<div id="acvm">
 		{{{getAchievements focusData}}}
 	</div>
