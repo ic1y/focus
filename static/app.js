@@ -241,10 +241,10 @@ const startFocus = () => {
 
 	function updateTime() {
 		const currentTime = Date.now();
-		const timeElapsed = currentTime - startTime;
-		timeEl.innerText = formatTime(timeElapsed);
+		const timeElapsed = formatTime(currentTime - startTime);
+		if(timeEl.innerText !== timeElapsed) timeEl.innerText = timeElapsed;
 		if (focusState === true) {
-			currentTimeout = setTimeout(updateTime, 1000);
+			currentTimeout = setTimeout(updateTime, 100);
 		}
 	}
 	updateTime();
