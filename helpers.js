@@ -19,7 +19,7 @@ const helpers = {
 				acvm.description
 			}" data-req="${acvm.req}" data-achv="${
 				achieved ? 1 : 0
-			}" data-src="${acvm.imgSrc}"><img alt="${acvm.name}" src="${
+			}" data-src="${acvm.imgSrc}"><img loading="lazy" alt="${acvm.name}" src="${
 				achieved ? "/acvm/" + acvm.imgSrc : "/acvm/mystery.png"
 			}"><span class="acvmTitle">${acvm.name} ${
 				achieved ? "✅" : "🔒"
