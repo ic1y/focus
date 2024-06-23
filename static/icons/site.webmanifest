@@ -1,5 +1,6 @@
 {
     "name": "Focus",
+    "description": "Productivity app with pomodoro timer, to-do list, achievements and music",
     "lang": "en",
     "short_name": "Focus",
     "icons": [
@@ -14,7 +15,7 @@
             "type": "image/png"
         }
     ],
-    "theme_color": "#ffffff",
+    "theme_color": "#dddddd",
     "background_color": "#000000",
     "start_url": "/",
     "display": "standalone",

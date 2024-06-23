@@ -130,17 +130,19 @@ summary > * {
 	display: inline;
 }
 #yt {
-	color: #000;
+	border: 0.25rem solid #fff;
+	border-radius: 1rem;
+	background-color: #ddd;
 }
 #yt > summary {
-	background-color: #ddd;
 	cursor: pointer;
 	width: 20rem;
 }
 #yt > iframe {
-	border: 0.25rem solid #ddd;
+	padding: 0.125rem;
+	padding-bottom: 0;
 	margin-top: 0;
-	padding: 0;
+	border-radius: 1rem;
 }
 #inputRow {
 	display: flex;
@@ -225,14 +227,14 @@ footer > button {
 	padding: 0.25rem;	
 	border-radius: 0;
 	background-color: #ddd;
-	font-size: 0.875rem;
+	font-size: 0.75rem;
 	border: 0;
 	border-top: 2px solid #000;
 }
 footer > button.active {
 	background-color: #eee;
 	font-weight: 700;
-	border: 2px solid #000;
+	border: 0.125rem solid #000;
 	border-top: none;
 }
 footer > :first-child.active {
@@ -254,12 +256,12 @@ footer > :last-child.active {
 	.acvmDesc {
 		color: #ddd;
 	}
-	#yt > summary {
-		color: #000;
-		background-color: #f7cac9;
+	#yt {
+		background-color: #444;
+		border-color: #222;
 	}
-	#yt > iframe {
-		border-color: #f7cac9;
+	#yt > summary {
+		color: #fff;
 	}
 	footer > button {
 		background-color: #222;
