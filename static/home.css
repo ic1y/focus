@@ -20,7 +20,7 @@ body {
 }
 main {
 	padding: 1rem;
-	padding-bottom: 3rem;
+	padding-bottom: 5rem;
 }
 #time {
 	font-size: 2rem;
@@ -217,7 +217,7 @@ footer {
 	position: fixed;
 	bottom: 0;
 	width: 100vw;
-	height: 2rem;
+	height: 4rem;
 	display: flex;
 	flex-direction: row;
 }
