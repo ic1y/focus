@@ -272,3 +272,8 @@ footer > :last-child.active {
 		border-color: #eee;
 	}
 }
+@media (min-width:600px)  { 
+	footer > button {
+		font-size: 1.25rem;
+	}
+}
