@@ -3,53 +3,64 @@
 {{/section}}
 
 <main>
-	<h1>Welcome back, {{username}}</h1>
-	<span id="time">00 : 00 : 00</span>
-	<button id="start">Start a focus</button>
-	<button id="end">End the focus</button>
-	<h2>My to-do list:</h2>
-	<label for="addToDo">Add to-do:</label> 
-	<div id="inputRow">
-		<input type="text" id="addToDo">
-		<button id="enterToDo" aria-label="Enter to-do">
-			<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
-				<title>Enter to-do</title>
-				<path stroke-linecap="round" stroke-linejoin="round" d="M17.25 8.25 21 12m0 0-3.75 3.75M21 12H3" />
-			</svg>	
-		</button>
-	</div>
-	<div id="toDoList">
-		{{toDos}}
-	</div>
-	<details id="yt">
-		<summary id="openMusic">Play Music (toggle show/hide)</summary>
-		<iframe src="" data-src="https://www.youtube-nocookie.com/embed/jfKfPfyJRdk?modestbranding=1&rel=0&fs=0" width="320" height="180" title="A YouTube video" frameborder="0"></iframe>
-	</details>
+	<h1>Focus</h1>
+	<section id="home">
+		<span id="time">&nbsp;</span>
+		<button id="start">Start a focus</button>
+		<button id="end">End the focus</button>
+		<details id="yt">
+			<summary id="openMusic">Play Music (toggle show/hide)</summary>
+			<iframe src="" data-src="https://www.youtube-nocookie.com/embed/jfKfPfyJRdk?modestbranding=1&rel=0&fs=0" width="320" height="180" title="A YouTube video" frameborder="0"></iframe>
+		</details>
+		<h2>My to-do list:</h2>
+		<label for="addToDo">Add to-do:</label> 
+		<div id="inputRow">
+			<input type="text" id="addToDo">
+			<button id="enterToDo" aria-label="Enter to-do">
+				<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
+					<title>Enter to-do</title>
+					<path stroke-linecap="round" stroke-linejoin="round" d="M17.25 8.25 21 12m0 0-3.75 3.75M21 12H3" />
+				</svg>	
+			</button>
+		</div>
+		<div id="toDoList">
+			{{toDos}}
+		</div>
+	</section>
 	{{!-- Rendered client-side to reduce server side load --}}
-	<h2 id="total" data-total="{{getTotalTime focusData}}"></h2> 
-	<details id="histTitle">
-		<summary>
-			<h3>My focus history:</h3>
-		</summary>
-		<ul id="focusList">
-		{{#each focusData}}
-				<li>
-					{{showTime this}}					
-				</li>
-		{{/each}}
-	</ul>
-	</details>
-	<h2>My Achievements:</h2>
-	<div id="acvm">
-		{{{getAchievements focusData}}}
-	</div>
-	<h2>Actions</h2>
-	<button id="logOut">Log out of account</button>
-	<button id="changePass">Change password</button>
-	<button id="requestData">Request user data</button>
-	<button id="delete">Delete account and data</button>
-	<span>Focus is made by Gilbert. <a href="/privacy">View Privacy Policy.</a> Want to report a error/request a feature? Please <a href="mailto:ggohnchs@gmail.com">contact the webmaster</a></span>
-
+	<section id="history">
+		<h2 id="total" data-total="{{getTotalTime focusData}}"></h2> 
+		<div id="histTitle">
+			<h2>My focus history:</h3>		
+			<ul id="focusList">
+			{{#each focusData}}
+					<li>
+						{{showTime this}}					
+					</li>
+			{{/each}}
+		</ul>
+		</div>
+	</section>
+	<section id="acvmTab">
+		<h2>My Achievements:</h2>
+		<div id="acvm">
+			{{{getAchievements focusData}}}
+		</div>
+	</section>
+	<section id="settings">
+		<h2>{{username}}'s Settings</h2>
+		<button id="logOut">Log out of account</button>
+		<button id="changePass">Change password</button>
+		<button id="requestData">Request user data</button>
+		<button id="delete">Delete account and data</button>
+		<span>Focus is made by Gilbert. <a href="/privacy">View Privacy Policy.</a> Want to report a error/request a feature? Please <a href="mailto:ggohnchs@gmail.com">contact the webmaster</a></span>
+	</section>
+	<footer>
+		<button data-section="home" class="active">Home</button>
+		<button data-section="history">History</button>
+		<button data-section="acvmTab">Achievements</button>
+		<button data-section="settings">Settings</button>
+	</footer>
 </main>
 <dialog>
 	<h2 id="dlgTitle">&nbsp;</h2>
@@ -57,7 +68,7 @@
 	<img id="dlgImg" src="" alt="" tabindex="0" role="button">
 	<span id="dlgDesc"></span>
 	<button id="closeDlg" type="button">Close Dialog</button>
-</dialog>
+</dialog>	
 <script src="/app.js"></script>
 <script src="/install.js"></script>
 

@@ -8,20 +8,31 @@ html {
 		sans-serif;
 	font-size: 1rem;
 }
-body, main {
+body, main, section {
 	display: flex;
 	flex-direction: column;
 	justify-content: center;
 	align-items: center;
 }
+body {
+	overflow: overlay;
+	background-color: #eee;
+}
 main {
 	padding: 1rem;
+	padding-bottom: 3rem;
 }
 #time {
 	font-size: 2rem;
 	padding: 1rem;
 }
-main > * {
+section {
+	display: none;
+}
+#home {
+	display: flex;
+}
+section > * {
 	margin: 0.5rem 0;
 }
 #start,
@@ -75,7 +86,6 @@ ul, li {
 	align-items: stretch;
 	flex-direction: row;
 	flex-wrap: wrap;
-	font-size: 1rem;
 	row-gap: 0.5rem;
 	column-gap: 0.5rem;
 	max-width: 52.5rem;
@@ -101,7 +111,6 @@ ul, li {
 	filter: brightness(0.5);
 }
 .acvmTitle {
-	font-size: 1rem;
 	margin-bottom: 0.5rem;
 }
 .acvmDesc {
@@ -124,12 +133,12 @@ summary > * {
 	color: #000;
 }
 #yt > summary {
-	background-color: #f7cac9;
+	background-color: #ddd;
 	cursor: pointer;
 	width: 20rem;
 }
 #yt > iframe {
-	border: 0.25rem solid #f7cac9;
+	border: 0.25rem solid #ddd;
 	margin-top: 0;
 	padding: 0;
 }
@@ -167,7 +176,7 @@ body.notiOS button > svg {
 	flex-direction: row;
 	column-gap: 1rem;
 }
-main > button {
+section > button {
 	font-size: 1.25rem;
 	padding: 0.5rem;
 	width: 16rem;
@@ -202,9 +211,42 @@ body.dlgOpen > main {
 	filter: brightness(0.25);
 	pointer-events: none;
 }
+footer {
+	position: fixed;
+	bottom: 0;
+	width: 100vw;
+	height: 2rem;
+	display: flex;
+	flex-direction: row;
+}
+footer > button {
+	height: 100%;
+	width: 25vw;
+	padding: 0.25rem;	
+	border-radius: 0;
+	background-color: #ddd;
+	font-size: 0.875rem;
+	border: 0;
+	border-top: 2px solid #000;
+}
+footer > button.active {
+	background-color: #eee;
+	font-weight: 700;
+	border: 2px solid #000;
+	border-top: none;
+}
+footer > :first-child.active {
+	border-left: 0;
+}
+footer > :last-child.active {
+	border-right: 0;
+}
 @media (prefers-color-scheme: dark) {
 	html {
 		color-scheme: dark;
+	}
+	body {
+		background-color: #000;
 	}
 	#acvm > div {
 		border-color: white;
@@ -218,5 +260,13 @@ body.dlgOpen > main {
 	}
 	#yt > iframe {
 		border-color: #f7cac9;
+	}
+	footer > button {
+		background-color: #222;
+		border-top-color: #ccc;
+	}
+	footer > button.active {
+		background-color: #000;
+		border-color: #eee;
 	}
 }

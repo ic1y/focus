@@ -93,7 +93,6 @@ const showToDo = async (toDo, done) => {
 const toDos = JSON.parse(toDoLi.innerText);
 toDoLi.innerText = "";
 if (toDos.length !== 0) {
-	console.log("todos:" + JSON.stringify(toDos));
 	for (let i = 0; i < toDos.length; i++) {
 		showToDo(toDos[i].name, Boolean(toDos[i].done));
 	}
@@ -147,10 +146,13 @@ const formatTime = (milliseconds, units) => {
 
 const totalEl = document.getElementById("total");
 let totalTime = Number(totalEl.dataset.total);
-if (totalTime > 0)
+if (totalTime > 0) {
 	totalEl.innerText =
 		"Total focus time: " + formatTime(totalTime * 1000, true);
-
+} else {
+	totalEl.innerText = "No history found! You can start by recording a focus."
+}
+	
 const dlg = document.querySelector("dialog");
 const dlgTitle = document.getElementById("dlgTitle");
 const dlgDesc = document.getElementById("dlgDesc");
@@ -409,3 +411,19 @@ document.getElementById("openMusic").addEventListener(
 	},
 	{ once: true }
 );
+
+const tabBtns = document.querySelector("footer").getElementsByTagName("button");
+for (let btn of tabBtns) {
+	btn.addEventListener("click", () => {
+		const sectId = btn.dataset.section;
+		const hiddenSects = Array.from(
+			document.getElementsByTagName("section")
+		).filter((el) => el.id !== sectId);
+		hiddenSects.forEach((sect) => {
+			sect.style.display = "none";
+		});
+		document.getElementById(sectId).style.display = "flex";
+		document.getElementsByClassName("active")[0].classList.remove("active");
+		btn.classList.add("active");
+	});
+}
