@@ -25,6 +25,9 @@ input[type="submit"], button {
 ul, ol {
 	width: 100%;
 }
+li {
+	line-height: 1.5;
+}
 @media (prefers-color-scheme: dark) {
 	html {
 		color-scheme: dark;
