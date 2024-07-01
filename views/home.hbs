@@ -3,19 +3,15 @@
 {{/section}}
 
 <main>
-	<h1>Focus</h1>
 	<section id="home">
+		<h1>Focus Home</h1>
 		<span id="time">&nbsp;</span>
 		<button id="start">Start a focus</button>
 		<button id="end">End the focus</button>
-		<details id="yt">
-			<summary id="openMusic">Play Music (toggle show/hide)</summary>
-			<iframe src="" data-src="https://www.youtube-nocookie.com/embed/jfKfPfyJRdk?modestbranding=1&rel=0&fs=0" width="320" height="180" title="A YouTube video" frameborder="0"></iframe>
-		</details>
 		<h2>My to-do list:</h2>
-		<label for="addToDo">Add to-do:</label> 
 		<div id="inputRow">
-			<input type="text" id="addToDo">
+			<label for="addToDo">Add to-do:</label> 
+			<input type="text" id="addToDo" placeholder="Enter to-do here">
 			<button id="enterToDo" aria-label="Enter to-do">
 				<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
 					<title>Enter to-do</title>
@@ -29,9 +25,10 @@
 	</section>
 	{{!-- Rendered client-side to reduce server side load --}}
 	<section id="history">
+		<h1>My Focus History</h1>
 		<h2 id="total" data-total="{{getTotalTime focusData}}"></h2> 
 		<div id="histTitle">
-			<h2>My focus history:</h3>		
+			<h2>My past focuses:</h3>		
 			<ul id="focusList">
 			{{#each focusData}}
 					<li>
@@ -41,14 +38,18 @@
 		</ul>
 		</div>
 	</section>
-	<section id="acvmTab">
-		<h2>My Characters:</h2>
+	<section id="characters">
+		<h1>My Characters:</h1>
 		<div id="acvm">
 			{{{getAchievements focusData}}}
 		</div>
 	</section>
 	<section id="settings">
-		<h2>{{username}}'s Settings</h2>
+		<h1>{{username}}'s Settings</h1>
+		<details id="yt">
+			<summary id="openMusic">Play Music</summary>
+			<iframe src="" data-src="https://www.youtube-nocookie.com/embed/jfKfPfyJRdk?modestbranding=1&rel=0&fs=0" width="320" height="180" title="A YouTube video" frameborder="0"></iframe>
+		</details>
 		<button id="logOut">Log out of account</button>
 		<button id="changePass">Change password</button>
 		<button id="requestData">Request user data</button>
@@ -58,7 +59,7 @@
 	<footer>
 		<button data-section="home" class="active">Home</button>
 		<button data-section="history">History</button>
-		<button data-section="acvmTab">Characters</button>
+		<button data-section="characters">Characters</button>
 		<button data-section="settings">Settings</button>
 	</footer>
 </main>

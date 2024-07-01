@@ -412,18 +412,31 @@ document.getElementById("openMusic").addEventListener(
 	{ once: true }
 );
 
+const openSection = (sectId) => {
+	if (document.getElementById(sectId) === null) return;
+	
+	const hiddenSects = Array.from(
+		document.getElementsByTagName("section")
+	).filter((el) => el.id !== sectId);
+	hiddenSects.forEach((sect) => {
+		sect.style.display = "none";
+	});
+	document.getElementById(sectId).style.display = "flex";
+	document.getElementsByClassName("active")[0].classList.remove("active");
+	document.querySelector(`button[data-section="${sectId}"]`).classList.add("active");
+	history.replaceState("", "", "?tab=" + sectId);
+}
+
 const tabBtns = document.querySelector("footer").getElementsByTagName("button");
 for (let btn of tabBtns) {
 	btn.addEventListener("click", () => {
 		const sectId = btn.dataset.section;
-		const hiddenSects = Array.from(
-			document.getElementsByTagName("section")
-		).filter((el) => el.id !== sectId);
-		hiddenSects.forEach((sect) => {
-			sect.style.display = "none";
-		});
-		document.getElementById(sectId).style.display = "flex";
-		document.getElementsByClassName("active")[0].classList.remove("active");
-		btn.classList.add("active");
+		openSection(sectId);
 	});
+}
+
+const urlParams = new URLSearchParams(location.search);
+console.log(urlParams.get("tab"));
+if (urlParams.get("tab") !== null) {
+	openSection(urlParams.get("tab"));
 }
