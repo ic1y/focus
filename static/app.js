@@ -312,7 +312,7 @@ const startFocus = () => {
 startBtn.addEventListener("click", startFocus);
 
 document.getElementById("logOut").addEventListener("click", () => {
-	if ((focusState === true && confirm("Warning: You have an ongoing focus! Are you sure you want to log out? Your current focus will not be recorded.") === true)
+	if ((focusState === true && confirm("Warning: You have an ongoing focus! Are you sure you want to log out? If you do so, your current focus will not be recorded. End your current focus before logging out.") === true)
 		|| focusState === false && confirm("Confirmation: Log out?") === true) {
 		document.location.pathname = "/log-out";
 	}
